@@ -1,0 +1,321 @@
+.vm-mine {
+  display: grid;
+  gap: var(--vm-space-md);
+}
+
+.vm-mine__hero,
+.vm-mine__panel,
+.vm-mine__incident,
+.vm-mine__empty {
+  border: 1px solid var(--vm-color-border);
+  border-radius: var(--vm-radius-lg);
+  background: #fff;
+  box-shadow: var(--vm-shadow-xs);
+}
+
+.vm-mine__hero,
+.vm-mine__panel {
+  padding: clamp(0.85rem, 1.2vw, 1.15rem);
+}
+
+.vm-mine__hero {
+  display: grid;
+  gap: var(--vm-space-md);
+}
+
+.vm-mine__hero-copy {
+  display: grid;
+  gap: var(--vm-space-xs);
+}
+
+.vm-mine__eyebrow,
+.vm-mine__kicker {
+  margin: 0;
+  font-size: var(--vm-step--1);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--vm-color-ink-muted);
+}
+
+.vm-mine__title {
+  margin: 0;
+  color: var(--vm-color-ink-strong);
+  font-family: var(--vm-font-display);
+  font-size: clamp(1.25rem, 1.05rem + 0.85vw, 1.75rem);
+}
+
+.vm-mine__copy {
+  margin: 0;
+  color: var(--vm-color-ink-soft);
+}
+
+.vm-mine__hero-actions {
+  display: grid;
+  gap: var(--vm-space-sm);
+}
+
+/* Buttons */
+.vm-mine__primary,
+.vm-mine__secondary,
+.vm-mine__chip,
+.vm-world__button {
+  min-height: 2.5rem;
+  border-radius: var(--vm-radius-pill);
+  transition:
+    transform var(--vm-motion-fast) var(--vm-ease-standard),
+    box-shadow var(--vm-motion-fast) var(--vm-ease-standard),
+    background-color var(--vm-motion-fast) var(--vm-ease-standard);
+}
+
+.vm-mine__primary,
+.vm-mine__secondary,
+.vm-world__button {
+  border: 1px solid var(--vm-color-border);
+  font-weight: 700;
+}
+
+.vm-mine__primary {
+  padding: 0.65rem 1rem;
+  background: var(--vm-color-mineral);
+  border-color: var(--vm-color-mineral);
+  color: #fff;
+}
+
+.vm-mine__secondary,
+.vm-world__button {
+  padding: 0.55rem 0.85rem;
+  background: #fff;
+  color: var(--vm-color-ink-strong);
+}
+
+.vm-mine__primary:hover:not(:disabled),
+.vm-mine__secondary:hover:not(:disabled),
+.vm-mine__chip:hover:not(:disabled),
+.vm-world__button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--vm-shadow-sm);
+}
+
+.vm-mine__primary:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.vm-mine__secondary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.vm-mine__primary:disabled,
+.vm-mine__secondary:disabled,
+.vm-world__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Panel sections */
+.vm-mine__panel {
+  display: grid;
+  gap: var(--vm-space-sm);
+}
+
+.vm-mine__panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--vm-space-sm);
+}
+
+.vm-mine__panel-head h4 {
+  margin: 0;
+  color: var(--vm-color-ink-strong);
+  font-size: 1rem;
+}
+
+.vm-mine__panel-head p {
+  margin: 0;
+  color: var(--vm-color-ink-soft);
+}
+
+/* Chips */
+.vm-mine__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--vm-space-xs);
+}
+
+.vm-mine__chip {
+  border: 1px solid var(--vm-color-border);
+  padding: 0.5rem 0.8rem;
+  background: #fff;
+  color: var(--vm-color-ink-strong);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.vm-mine__chip.is-active {
+  background: rgba(15, 118, 110, 0.08);
+  border-color: var(--vm-color-border-accent);
+  color: var(--vm-color-mineral);
+}
+
+/* Meters */
+.vm-mine__meters {
+  display: grid;
+  gap: var(--vm-space-xs);
+}
+
+.vm-mine__meter-row {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.vm-mine__meter-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--vm-space-xs);
+  color: var(--vm-color-ink-soft);
+  font-size: 0.83rem;
+}
+
+.vm-mine__meter-head strong {
+  color: var(--vm-color-ink-strong);
+}
+
+.vm-mine__meter-bar {
+  overflow: hidden;
+  height: 0.45rem;
+  border-radius: var(--vm-radius-pill);
+  background: var(--vm-color-bg-deep);
+}
+
+.vm-mine__meter-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--vm-color-mineral);
+}
+
+/* Incidents */
+.vm-mine__incidents {
+  display: grid;
+  gap: var(--vm-space-sm);
+}
+
+.vm-mine__incident,
+.vm-mine__empty {
+  padding: 0.8rem 0.85rem;
+}
+
+.vm-mine__incident h5,
+.vm-mine__empty h5 {
+  margin: 0;
+  color: var(--vm-color-ink-strong);
+}
+
+.vm-mine__incident p,
+.vm-mine__empty p {
+  margin: 0;
+  color: var(--vm-color-ink-soft);
+}
+
+.vm-mine__incident {
+  display: grid;
+  gap: var(--vm-space-xs);
+}
+
+.vm-mine__incident-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* Find feed */
+.vm-mine__find-feed {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.vm-mine__find-feed li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--vm-space-sm);
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--vm-radius-sm);
+  border: 1px solid var(--vm-color-border);
+  background: #fff;
+}
+
+.vm-mine__find-feed strong {
+  color: var(--vm-color-ink-strong);
+}
+
+.vm-mine__find-feed span {
+  color: var(--vm-color-ink-soft);
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+@media (min-width: 48rem) {
+  .vm-mine__hero-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 48rem) {
+  .vm-mine__panel-head,
+  .vm-mine__find-feed li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .vm-mine__find-feed span {
+    text-align: left;
+  }
+
+  .vm-mine__primary,
+  .vm-mine__secondary,
+  .vm-mine__chip {
+    width: 100%;
+  }
+
+  /* Ensure primary Dig! button is a prominent tap target on mobile */
+  .vm-mine__primary {
+    min-height: 3rem;
+    font-size: 1.05rem;
+  }
+
+  /* Hero actions become a vertical stack on small screens */
+  .vm-mine__hero-actions {
+    flex-direction: column;
+  }
+}
+
+/* Rarity dots */
+.vm-mine__find-feed li strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.vm-mine__find-feed li strong::before {
+  content: '';
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: #9ca3af;
+  flex-shrink: 0;
+}
+
+.vm-mine__find-feed li[data-rarity="uncommon"] strong::before { background: #22c55e; }
+.vm-mine__find-feed li[data-rarity="rare"] strong::before { background: #3b82f6; }
+.vm-mine__find-feed li[data-rarity="epic"] strong::before { background: #a855f7; }
+.vm-mine__find-feed li[data-rarity="legendary"] strong::before { background: #eab308; }
+.vm-mine__find-feed li[data-rarity="mythic"] strong::before { background: #ef4444; }

@@ -1,0 +1,345 @@
+.vm-world {
+  display: grid;
+  gap: var(--vm-space-md);
+}
+
+.vm-world__hero,
+.vm-world__panel,
+.vm-world__biome-card,
+.vm-world__breakpoint,
+.vm-world__crew-card,
+.vm-world__empty {
+  border: 1px solid var(--vm-color-border);
+  border-radius: var(--vm-radius-lg);
+  background: #fff;
+  box-shadow: var(--vm-shadow-xs);
+}
+
+.vm-world__hero,
+.vm-world__panel {
+  padding: clamp(0.85rem, 1.2vw, 1.15rem);
+}
+
+.vm-world__hero {
+  display: grid;
+  gap: var(--vm-space-md);
+}
+
+.vm-world__eyebrow,
+.vm-world__kicker {
+  margin: 0;
+  font-size: var(--vm-step--1);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--vm-color-ink-muted);
+}
+
+.vm-world__title {
+  margin: 0;
+  color: var(--vm-color-ink-strong);
+  font-family: var(--vm-font-display);
+  font-size: clamp(1.25rem, 1.05rem + 0.85vw, 1.75rem);
+}
+
+.vm-world__copy {
+  margin: 0;
+  color: var(--vm-color-ink-soft);
+}
+
+.vm-world__hero-metrics {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--vm-space-sm);
+}
+
+.vm-world__hero-metrics > div {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.7rem 0.75rem;
+  border-radius: var(--vm-radius-sm);
+  background: var(--vm-color-bg-warm);
+}
+
+.vm-world__hero-metrics dt {
+  margin: 0;
+  font-size: 0.74rem;
+  color: var(--vm-color-ink-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.vm-world__hero-metrics dd {
+  margin: 0;
+  color: var(--vm-color-ink-strong);
+  font-weight: 800;
+}
+
+.vm-world__panel {
+  display: grid;
+  gap: var(--vm-space-sm);
+}
+
+.vm-world__panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--vm-space-sm);
+}
+
+.vm-world__panel-head h4 {
+  margin: 0;
+  color: var(--vm-color-ink-strong);
+  font-size: 1rem;
+}
+
+.vm-world__panel-head p {
+  margin: 0;
+  color: var(--vm-color-ink-soft);
+}
+
+/* Grids */
+.vm-world__biome-grid,
+.vm-world__breakpoints,
+.vm-world__crew-grid {
+  display: grid;
+  gap: var(--vm-space-sm);
+}
+
+.vm-world__biome-card,
+.vm-world__breakpoint,
+.vm-world__crew-card,
+.vm-world__empty {
+  padding: 0.75rem 0.85rem;
+}
+
+.vm-world__biome-card {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.vm-world__biome-card h5,
+.vm-world__breakpoint strong,
+.vm-world__crew-card h5,
+.vm-world__empty h5 {
+  margin: 0;
+  color: var(--vm-color-ink-strong);
+}
+
+.vm-world__biome-card p,
+.vm-world__breakpoint p,
+.vm-world__crew-card p,
+.vm-world__empty p {
+  margin: 0;
+  color: var(--vm-color-ink-soft);
+}
+
+.vm-world__biome-card.is-active {
+  border-color: var(--vm-color-border-accent);
+  box-shadow: var(--vm-shadow-sm);
+}
+
+.vm-world__biome-card.is-locked {
+  opacity: 0.55;
+}
+
+/* Biome progress */
+.vm-world__biome-progress {
+  overflow: hidden;
+  height: 0.4rem;
+  border-radius: var(--vm-radius-pill);
+  background: var(--vm-color-bg-deep);
+}
+
+.vm-world__biome-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--vm-color-mineral);
+}
+
+.vm-world__biome-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--vm-space-sm);
+}
+
+.vm-world__biome-foot span {
+  color: var(--vm-color-ink-muted);
+  font-size: 0.8rem;
+}
+
+.vm-world__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Breakpoints */
+.vm-world__breakpoints {
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+}
+
+.vm-world__breakpoint {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.vm-world__breakpoint span {
+  color: var(--vm-color-ink-muted);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.vm-world__breakpoint.is-unlocked {
+  border-color: var(--vm-color-border-accent);
+  background: rgba(15, 118, 110, 0.04);
+}
+
+/* Crew */
+.vm-world__crew-grid {
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+}
+
+.vm-world__crew-card {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.vm-world__crew-card span {
+  color: var(--vm-color-ink-muted);
+  font-size: 0.8rem;
+}
+
+/* Crew sliders */
+.vm-world__crew-sliders {
+  display: grid;
+  gap: var(--vm-space-sm);
+}
+
+.vm-world__crew-row {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.vm-world__crew-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--vm-space-sm);
+}
+
+.vm-world__crew-label span {
+  font-size: 0.88rem;
+  color: var(--vm-color-ink-strong);
+  font-weight: 600;
+}
+
+.vm-world__crew-label strong {
+  font-size: 0.88rem;
+  color: var(--vm-color-mineral);
+  font-variant-numeric: tabular-nums;
+  min-width: 3rem;
+  text-align: right;
+}
+
+.vm-world__crew-slider {
+  width: 100%;
+  accent-color: var(--vm-color-mineral);
+  cursor: pointer;
+}
+
+.vm-world__crew-detail {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--vm-color-ink-muted);
+}
+
+/* Slider */
+.vm-world__slider-label {
+  display: block;
+  color: var(--vm-color-ink-strong);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.vm-world__slider {
+  width: 100%;
+  accent-color: var(--vm-color-mineral);
+  cursor: pointer;
+}
+
+/* Depth stratum tick labels */
+.vm-world__depth-ticks {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.25rem;
+  margin-top: -0.15rem;
+}
+
+.vm-world__depth-ticks span {
+  font-size: 0.7rem;
+  color: var(--vm-color-ink-muted);
+  letter-spacing: 0.04em;
+  text-align: center;
+  flex: 1;
+}
+
+.vm-world__depth-ticks span:first-child {
+  text-align: left;
+}
+
+.vm-world__depth-ticks span:last-child {
+  text-align: right;
+}
+
+/* Lists */
+.vm-world__discovery-list,
+.vm-world__history-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.vm-world__discovery-list li,
+.vm-world__history-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--vm-space-sm);
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--vm-radius-sm);
+  border: 1px solid var(--vm-color-border);
+  background: #fff;
+}
+
+.vm-world__discovery-list strong,
+.vm-world__history-list strong {
+  color: var(--vm-color-ink-strong);
+}
+
+.vm-world__discovery-list span,
+.vm-world__history-list span {
+  color: var(--vm-color-ink-soft);
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+@media (max-width: 52rem) {
+  .vm-world__panel-head,
+  .vm-world__biome-foot,
+  .vm-world__discovery-list li,
+  .vm-world__history-list li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .vm-world__discovery-list span,
+  .vm-world__history-list span {
+    text-align: left;
+  }
+}

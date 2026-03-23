@@ -1,0 +1,432 @@
+/* Responsive layout and accessibility for the playable game UI */
+
+:root {
+  --vm-game-touch-target: 2.75rem;
+  --vm-game-gap: var(--vm-space-sm, 1rem);
+  --vm-game-gap-lg: var(--vm-space-md, 1.5rem);
+  --vm-game-sticky-offset: max(0.5rem, env(safe-area-inset-top, 0rem));
+  --vm-game-panel-min: 18rem;
+  --vm-game-aside-max: 24rem;
+}
+
+/* Prevent horizontal overflow */
+:where(
+  .vm-game,
+  .vm-game-shell,
+  .vm-game-shell__hud,
+  .vm-game-shell__tabs,
+  .vm-game-shell__panel,
+  .vm-game-shell__aside,
+  .vm-mine,
+  .vm-economy,
+  .vm-world
+) {
+  min-width: 0;
+}
+
+:where(.vm-game) {
+  overflow-x: clip;
+}
+
+/* Game shell grid */
+:where(.vm-game-shell) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--vm-game-gap);
+  align-items: start;
+}
+
+:where(.vm-game-shell__hud, .vm-game-shell__tabs) {
+  display: grid;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+:where(.vm-game-shell__hud, .vm-game-shell__tabs, .vm-game-shell__panel, .vm-game-shell__aside) {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Tab scrolling row */
+:where(.vm-game-shell__tabs) {
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  align-items: stretch;
+  justify-content: start;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  padding-bottom: 0.15rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Panels */
+:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world) {
+  display: grid;
+  gap: var(--vm-game-gap);
+  min-width: 0;
+  align-content: start;
+}
+
+/* Panel: let the page (#app) scroll — no nested scroll container on mobile/tablet */
+:where(.vm-game-shell__panel) {
+  overflow-y: visible;
+}
+
+/* Aside: also let page scroll on mobile/tablet; desktop overrides below */
+:where(.vm-game-shell__aside) {
+  overflow-y: visible;
+}
+
+:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world) > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Text wrapping */
+:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world)
+  :where(h1, h2, h3, h4, p, li, dt, dd, figcaption, span, strong, em) {
+  overflow-wrap: anywhere;
+}
+
+:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world)
+  :where(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world)
+  :where(p, li, dt, dd, figcaption) {
+  text-wrap: pretty;
+}
+
+/* Media containment */
+:where(.vm-game) :where(img, svg, canvas, video, iframe) {
+  display: block;
+  max-width: 100%;
+}
+
+:where(.vm-game) :where(table, pre, code, textarea, input, select) {
+  max-width: 100%;
+}
+
+:where(.vm-game) :where(pre, code) {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+:where(.vm-game) :where(table) {
+  display: block;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  border-collapse: collapse;
+}
+
+/* Touch targets */
+:where(.vm-game) :where(button, [role="button"], a[href], input:not([type="hidden"]), select, summary) {
+  min-height: var(--vm-game-touch-target);
+  min-width: var(--vm-game-touch-target);
+}
+
+:where(.vm-game) :where(button, [role="button"], a[href], input:not([type="hidden"]), select, summary, textarea) {
+  touch-action: manipulation;
+}
+
+:where(.vm-game-shell__tabs) :where(button, [role="button"], a[href], summary) {
+  min-width: 0;
+}
+
+/* Card base override for responsive */
+:where(.vm-game-command, .vm-game-metric-card, .vm-game-offline, .vm-game-surface, .vm-game-sidecard) {
+  display: grid;
+  gap: var(--vm-game-gap);
+  min-width: 0;
+  padding: clamp(0.85rem, 1.5vw, 1.15rem);
+  border: 1px solid var(--vm-color-border);
+  border-radius: var(--vm-radius-lg);
+  background: #fff;
+  box-shadow: var(--vm-shadow-xs);
+  overflow: hidden;
+}
+
+:where(.vm-game-command) {
+  background: var(--vm-color-bg-warm);
+}
+
+/* Responsive header elements */
+:where(.vm-game-command__headline, .vm-game-offline__header, .vm-game-sidecard__meta, .vm-game-surface__header) {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--vm-space-sm);
+  min-width: 0;
+}
+
+/* HUD grids */
+:where(.vm-game-hud-strip, .vm-game-offline__stats) {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
+  min-width: 0;
+}
+
+:where(.vm-game-mini-grid, .vm-game-statlist) {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+  margin: 0;
+  min-width: 0;
+}
+
+:where(.vm-game-mini-grid, .vm-game-statlist) :where(div) {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+/* Eyebrow labels */
+:where(
+  .vm-game-command__eyebrow,
+  .vm-game-command__focus-label,
+  .vm-game-metric-card__label,
+  .vm-game-offline__eyebrow,
+  .vm-game-offline__stat-label,
+  .vm-game-sidecard__eyebrow,
+  .vm-game-surface__eyebrow,
+  .vm-game-tab__kicker,
+  .vm-game-mini-grid dt,
+  .vm-game-statlist dt
+) {
+  margin: 0;
+  color: var(--vm-color-ink-muted);
+  font-size: var(--vm-step--1);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Value labels */
+:where(
+  .vm-game-command__title,
+  .vm-game-command__focus-value,
+  .vm-game-metric-card__value,
+  .vm-game-offline__title,
+  .vm-game-offline__stat-value,
+  .vm-game-sidecard__title,
+  .vm-game-surface__title,
+  .vm-game-tab__label,
+  .vm-game-mini-grid dd,
+  .vm-game-statlist dd
+) {
+  margin: 0;
+  min-width: 0;
+  color: var(--vm-color-ink-strong);
+  text-wrap: balance;
+}
+
+:where(.vm-game-command__title, .vm-game-offline__title, .vm-game-sidecard__title, .vm-game-surface__title) {
+  font-family: var(--vm-font-display);
+  font-size: clamp(1.15rem, 1rem + 0.6vw, 1.45rem);
+  line-height: 1.05;
+}
+
+/* Copy text */
+:where(.vm-game-command__copy, .vm-game-metric-card__detail, .vm-game-offline__copy, .vm-game-sidecard__copy, .vm-game-surface__summary, .vm-game-tab__summary) {
+  margin: 0;
+  min-width: 0;
+  color: var(--vm-color-ink-soft);
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+/* Tabs */
+:where(.vm-game-tab) {
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+  width: min(100%, 17rem);
+  min-width: min(14.5rem, 82vw);
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--vm-color-border);
+  border-radius: var(--vm-radius-md);
+  background: #fff;
+  box-shadow: var(--vm-shadow-xs);
+  text-align: left;
+  white-space: normal;
+  overflow: hidden;
+}
+
+:where(.vm-game-tab.is-active) {
+  border-color: var(--vm-color-border-accent);
+  background: var(--vm-color-bg-warm);
+  box-shadow: var(--vm-shadow-sm);
+}
+
+:where(.vm-game-tab__summary) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+:where(.vm-game-shell__panel, .vm-game-shell__aside) {
+  gap: var(--vm-game-gap-lg);
+}
+
+:where(.vm-game-shell__aside) {
+  grid-auto-rows: min-content;
+}
+
+/* Surface display toggle */
+:where(.vm-game-surface) {
+  display: none;
+  align-content: start;
+}
+
+:where(.vm-game-surface.is-active) {
+  display: grid;
+}
+
+:where(.vm-game-surface__body) {
+  display: grid;
+  gap: var(--vm-game-gap-lg);
+  min-width: 0;
+}
+
+:where(.vm-game-surface__body) > * {
+  min-width: 0;
+}
+
+/* Feed */
+:where(.vm-game-feed) {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:where(.vm-game-feed li) {
+  min-width: 0;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--vm-color-border);
+  border-radius: var(--vm-radius-sm);
+  background: #fff;
+  overflow-wrap: anywhere;
+}
+
+/* Meter */
+:where(.vm-game-meter) {
+  overflow: hidden;
+  min-width: 0;
+  height: 0.5rem;
+  border-radius: var(--vm-radius-pill);
+  background: var(--vm-color-bg-deep);
+}
+
+:where(.vm-game-meter__fill) {
+  display: block;
+  width: calc(var(--vm-game-meter, 0) * 100%);
+  max-width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--vm-color-mineral);
+}
+
+/* Mobile */
+@media (max-width: 47.99rem) {
+  :where(.vm-game-shell__tabs) {
+    grid-auto-columns: minmax(min(14.5rem, 100%), 84vw);
+    padding-bottom: 0.25rem;
+  }
+
+  :where(.vm-game-command__headline, .vm-game-offline__header, .vm-game-sidecard__meta, .vm-game-surface__header) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  :where(.vm-game-tab) {
+    width: auto;
+  }
+}
+
+/* Touch devices */
+@media (pointer: coarse) {
+  :where(.vm-game-shell__hud, .vm-game-shell__tabs, .vm-game-shell__panel, .vm-game-shell__aside) {
+    gap: 0.85rem;
+  }
+
+  :where(.vm-game) :where(button, [role="button"], a[href], input:not([type="hidden"]), select, summary) {
+    min-height: 2.85rem;
+  }
+}
+
+/* Tablet+ two-column layout */
+@media (min-width: 48rem) {
+  :where(.vm-game-shell) {
+    grid-template-columns: minmax(0, 1fr) minmax(var(--vm-game-panel-min), 22rem);
+    gap: var(--vm-game-gap-lg);
+  }
+
+  :where(.vm-game-shell__hud, .vm-game-shell__tabs) {
+    grid-column: 1 / -1;
+  }
+
+  :where(.vm-game-shell__panel) {
+    grid-column: 1;
+  }
+
+  :where(.vm-game-shell__aside) {
+    grid-column: 2;
+    align-self: start;
+  }
+
+  :where(.vm-game-shell__tabs) {
+    grid-auto-columns: minmax(14rem, 1fr);
+  }
+}
+
+/* Desktop */
+@media (min-width: 64rem) {
+  :where(.vm-game-shell) {
+    grid-template-columns: minmax(0, 1fr) minmax(20rem, var(--vm-game-aside-max));
+  }
+
+  :where(.vm-game-shell__hud) {
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  }
+
+  :where(.vm-game-shell__tabs) {
+    /* On desktop the tabs pin below any OS/browser chrome */
+    top: var(--vm-game-sticky-offset);
+  }
+
+  :where(.vm-game-shell__aside) {
+    position: sticky;
+    top: calc(var(--vm-game-sticky-offset) + 0.75rem);
+    max-height: calc(100vh - var(--vm-game-sticky-offset) - 1.5rem);
+    max-height: calc(100dvh - var(--vm-game-sticky-offset) - 1.5rem);
+    overflow-y: auto;
+  }
+
+  :where(.vm-mine, .vm-economy, .vm-world) {
+    gap: var(--vm-game-gap-lg);
+  }
+}
+
+/* Wide */
+@media (min-width: 90rem) {
+  :where(.vm-game-shell) {
+    grid-template-columns: minmax(0, 1.2fr) minmax(21rem, 26rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.vm-game, .vm-game *) {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

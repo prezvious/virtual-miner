@@ -1,0 +1,150 @@
+.vm-world,
+.vm-roadmap,
+.vm-cta {
+  position: relative;
+}
+
+.vm-world__descent,
+.vm-world__featured,
+.vm-roadmap__list,
+.vm-cta__notes {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.vm-world__band,
+.vm-roadmap__item {
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+}
+
+.vm-world__band-meta,
+.vm-roadmap__step,
+.vm-world__biome-depth {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  color: var(--ink-soft);
+  font-family: var(--vm-font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.vm-world__card-title,
+.vm-world__biome-title,
+.vm-roadmap__title {
+  margin: 0;
+  color: var(--ink-strong);
+  font-size: clamp(1.15rem, 1vw + 0.95rem, 1.5rem);
+  line-height: 1.1;
+  font-family: var(--font-display);
+  letter-spacing: -0.035em;
+}
+
+.vm-world__band-biomes,
+.vm-world__biome-rule,
+.vm-roadmap__index {
+  color: var(--accent);
+}
+
+.vm-world__band-biomes,
+.vm-world__biome-rule {
+  margin: 0;
+  font-family: var(--vm-font-mono);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.vm-world__featured {
+  margin-top: 0.35rem;
+}
+
+/* Biome card */
+.vm-world__biome {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 0.75rem;
+  min-height: 14rem;
+  padding: clamp(1.2rem, 2.5vw, 1.6rem);
+  border: 1px solid var(--vm-color-border, var(--line));
+  border-radius: var(--radius-lg);
+  background: #fff;
+  color: var(--vm-color-ink-strong, var(--ink-strong));
+  box-shadow: var(--shadow-soft);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.vm-world__biome > * {
+  position: relative;
+  z-index: 1;
+}
+
+.vm-world__biome:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-deep);
+}
+
+/* Roadmap */
+.vm-roadmap__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vm-roadmap__item {
+  display: grid;
+  gap: 0.65rem;
+}
+
+/* CTA */
+.vm-cta__panel {
+  display: grid;
+  gap: 1.2rem;
+  padding: clamp(1.75rem, 4.5vw, 2.5rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--page-bg-deep);
+  box-shadow: var(--shadow-soft);
+}
+
+.vm-cta__notes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vm-cta__notes li {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+
+.vm-cta__notes li:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+/* Responsive */
+@media (min-width: 68rem) {
+  .vm-world__descent,
+  .vm-roadmap__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.75rem;
+  }
+
+  .vm-world__featured {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .vm-world__band-meta,
+  .vm-roadmap__step,
+  .vm-world__biome-depth {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

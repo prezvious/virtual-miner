@@ -1,0 +1,546 @@
+.vm-economy {
+  display: grid;
+  gap: var(--vm-space-md);
+  min-width: 0;
+  align-content: start;
+}
+
+.vm-economy__hero,
+.vm-economy__section,
+.vm-economy__card,
+.vm-economy__inventory-row,
+.vm-economy__market-row,
+.vm-economy__empty {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--vm-color-border);
+  border-radius: var(--vm-radius-lg);
+  background: #fff;
+  box-shadow: var(--vm-shadow-xs);
+}
+
+.vm-economy__hero,
+.vm-economy__section {
+  padding: clamp(0.85rem, 1.2vw, 1.15rem);
+}
+
+.vm-economy__hero {
+  display: grid;
+  gap: var(--vm-space-md);
+}
+
+.vm-economy__hero-copy {
+  display: grid;
+  gap: var(--vm-space-xs);
+}
+
+.vm-economy__eyebrow,
+.vm-economy__kicker {
+  margin: 0;
+  font-size: var(--vm-step--1);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--vm-color-ink-muted);
+}
+
+.vm-economy__title,
+.vm-economy__section-title {
+  margin: 0;
+  color: var(--vm-color-ink-strong);
+  font-family: var(--vm-font-display);
+  line-height: 1.05;
+}
+
+.vm-economy__title {
+  font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2rem);
+}
+
+.vm-economy__section-title {
+  font-size: clamp(1.1rem, 0.95rem + 0.6vw, 1.4rem);
+}
+
+.vm-economy__copy,
+.vm-economy__section-note,
+.vm-economy__inventory-main p,
+.vm-economy__market-row p,
+.vm-economy__card-head p,
+.vm-economy__empty p {
+  margin: 0;
+  color: var(--vm-color-ink-soft);
+}
+
+.vm-economy__hero-actions {
+  display: grid;
+  gap: var(--vm-space-sm);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.vm-economy__primary,
+.vm-economy__secondary {
+  min-height: 2.75rem;
+  border-radius: var(--vm-radius-pill);
+  font-weight: 700;
+  transition:
+    transform var(--vm-motion-fast) var(--vm-ease-standard),
+    box-shadow var(--vm-motion-fast) var(--vm-ease-standard),
+    background-color var(--vm-motion-fast) var(--vm-ease-standard);
+}
+
+.vm-economy__primary {
+  padding: 0.7rem 1rem;
+  background: var(--vm-color-mineral);
+  border-color: var(--vm-color-mineral);
+  color: #fff;
+}
+
+.vm-economy__secondary {
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--vm-color-border);
+  background: #fff;
+  color: var(--vm-color-ink-strong);
+}
+
+.vm-economy__primary:hover:not(:disabled),
+.vm-economy__secondary:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.vm-economy__primary:disabled,
+.vm-economy__secondary:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Capacity bar */
+.vm-economy__capacity {
+  display: grid;
+  gap: var(--vm-space-xs);
+  padding: 0.75rem 0.85rem;
+  border-radius: var(--vm-radius-md);
+  background: var(--vm-color-bg-warm);
+  border: 1px solid var(--vm-color-border);
+}
+
+.vm-economy__capacity-copy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--vm-space-xs);
+}
+
+.vm-economy__capacity-label {
+  color: var(--vm-color-ink-soft);
+  font-size: var(--vm-step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.vm-economy__capacity-value {
+  color: var(--vm-color-ink-strong);
+}
+
+.vm-economy__capacity-bar,
+.vm-economy__progress {
+  overflow: hidden;
+  height: 0.45rem;
+  border-radius: var(--vm-radius-pill);
+  background: var(--vm-color-bg-deep);
+}
+
+.vm-economy__capacity-bar span,
+.vm-economy__progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--vm-color-mineral);
+}
+
+/* Totals */
+.vm-economy__totals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--vm-space-sm);
+  margin: 0;
+  align-items: start;
+}
+
+.vm-economy__total {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: var(--vm-radius-md);
+  background: var(--vm-color-bg-warm);
+}
+
+.vm-economy__total dt,
+.vm-economy__inventory-meta dt,
+.vm-economy__market-meta dt {
+  margin: 0;
+  color: var(--vm-color-ink-muted);
+  font-size: var(--vm-step--1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.vm-economy__total dd,
+.vm-economy__inventory-meta dd,
+.vm-economy__market-meta dd {
+  margin: 0;
+  color: var(--vm-color-ink-strong);
+  font-weight: 800;
+}
+
+/* Grid layout */
+.vm-economy__grid {
+  display: grid;
+  gap: var(--vm-space-md);
+  align-items: start;
+}
+
+.vm-economy__section {
+  display: grid;
+  gap: var(--vm-space-md);
+}
+
+.vm-economy__section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--vm-space-sm);
+}
+
+.vm-economy__inventory,
+.vm-economy__market,
+.vm-economy__cards {
+  display: grid;
+  gap: var(--vm-space-sm);
+  align-items: start;
+}
+
+.vm-economy__inventory-row,
+.vm-economy__market-row,
+.vm-economy__card,
+.vm-economy__empty {
+  padding: 0.75rem 0.85rem;
+}
+
+.vm-economy__inventory-row,
+.vm-economy__market-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--vm-space-sm);
+  flex-wrap: wrap;
+}
+
+.vm-economy__inventory-main,
+.vm-economy__card-head,
+.vm-economy__card-foot,
+.vm-economy__market-meta,
+.vm-economy__inventory-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--vm-space-sm);
+  min-width: 0;
+}
+
+.vm-economy__inventory-main,
+.vm-economy__card-head {
+  flex: 1 1 14rem;
+}
+
+.vm-economy__inventory-main h4,
+.vm-economy__market-row h4,
+.vm-economy__card-head h4,
+.vm-economy__empty h4 {
+  margin: 0;
+  color: var(--vm-color-ink-strong);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.vm-economy__inventory-meta,
+.vm-economy__market-meta {
+  justify-content: flex-end;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  row-gap: var(--vm-space-xs);
+}
+
+.vm-economy__inventory-meta > div,
+.vm-economy__market-meta > div {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 4.5rem;
+}
+
+/* Rarity dots */
+.vm-economy__rarity {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--vm-color-ink-faint);
+}
+
+.vm-economy__rarity--common { background: #9ca3af; }
+.vm-economy__rarity--uncommon { background: #22c55e; }
+.vm-economy__rarity--rare { background: #3b82f6; }
+.vm-economy__rarity--epic { background: #a855f7; }
+.vm-economy__rarity--legendary { background: #eab308; }
+.vm-economy__rarity--mythic { background: #ef4444; }
+.vm-economy__rarity--quiet { background: #d1d5db; }
+
+/* Finds */
+.vm-economy__finds {
+  display: grid;
+  gap: var(--vm-space-xs);
+}
+
+.vm-economy__finds-label {
+  margin: 0;
+  color: var(--vm-color-ink-muted);
+  font-size: var(--vm-step--1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.vm-economy__finds-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--vm-space-xs);
+}
+
+.vm-economy__find {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.65rem;
+  border-radius: var(--vm-radius-pill);
+  max-width: 100%;
+  color: var(--vm-color-ink-strong);
+  font-size: var(--vm-step--1);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+/* Upgrade cards */
+.vm-economy__card {
+  display: grid;
+  gap: var(--vm-space-sm);
+}
+
+.vm-economy__card-head,
+.vm-economy__card-foot {
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.vm-economy__level,
+.vm-economy__reward {
+  color: var(--vm-color-mineral);
+  font-family: var(--vm-font-mono);
+  font-size: var(--vm-step--1);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.vm-economy__reward {
+  color: var(--vm-color-gold);
+}
+
+.vm-economy__secondary {
+  max-width: 100%;
+}
+
+.vm-economy__upgrade-launch {
+  display: grid;
+  gap: var(--vm-space-sm);
+}
+
+.vm-economy__launcher-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--vm-space-sm);
+}
+
+/* Modal */
+.vm-economy-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: none;
+  place-items: center;
+  padding: clamp(0.75rem, 2.5vw, 1.5rem);
+}
+
+.vm-economy-modal-backdrop.is-open {
+  display: grid;
+}
+
+.vm-economy-modal__veil {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
+}
+
+.vm-economy-modal {
+  position: relative;
+  width: min(100%, 66rem);
+  max-height: min(90vh, 54rem);
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  border: 1px solid var(--vm-color-border-strong);
+  border-radius: var(--vm-radius-lg);
+  background: #fff;
+  box-shadow: var(--vm-shadow-xl);
+  overflow: hidden;
+}
+
+.vm-economy-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--vm-space-sm);
+  padding: clamp(0.85rem, 1vw + 0.7rem, 1.15rem);
+  border-bottom: 1px solid var(--vm-color-border);
+}
+
+.vm-economy-modal__close {
+  flex-shrink: 0;
+}
+
+.vm-economy-modal__tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.3rem;
+  padding: 0.5rem clamp(0.85rem, 1vw + 0.7rem, 1.15rem);
+  border-bottom: 1px solid var(--vm-color-border);
+}
+
+.vm-economy-modal__tab {
+  min-height: 2.4rem;
+  border: 1px solid var(--vm-color-border);
+  border-radius: var(--vm-radius-pill);
+  background: #fff;
+  color: var(--vm-color-ink-strong);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  transition:
+    transform var(--vm-motion-fast) var(--vm-ease-standard),
+    box-shadow var(--vm-motion-fast) var(--vm-ease-standard),
+    border-color var(--vm-motion-fast) var(--vm-ease-standard);
+}
+
+.vm-economy-modal__tab:hover,
+.vm-economy-modal__tab:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: var(--vm-shadow-sm);
+}
+
+.vm-economy-modal__tab.is-active {
+  border-color: var(--vm-color-border-accent);
+  background: var(--vm-color-bg-warm);
+}
+
+.vm-economy-modal__body {
+  min-height: 0;
+  overflow: auto;
+  padding: clamp(0.75rem, 0.8vw + 0.55rem, 1rem);
+}
+
+.vm-economy-modal__body .vm-economy__cards {
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+.vm-economy__capacity,
+.vm-economy__total {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.vm-economy__capacity-bar span,
+.vm-economy__progress span {
+  max-width: 100%;
+}
+
+@media (min-width: 52rem) {
+  .vm-economy__hero-actions {
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+    align-items: end;
+  }
+}
+
+@media (min-width: 60rem) {
+  .vm-economy__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 52rem) {
+  .vm-economy__section-head,
+  .vm-economy__inventory-row,
+  .vm-economy__market-row,
+  .vm-economy__card-head,
+  .vm-economy__card-foot,
+  .vm-economy__capacity-copy {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .vm-economy__inventory-meta,
+  .vm-economy__market-meta {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+    justify-content: stretch;
+  }
+
+  .vm-economy__inventory-meta > div,
+  .vm-economy__market-meta > div {
+    min-width: 0;
+  }
+
+  .vm-economy__primary,
+  .vm-economy__secondary {
+    width: 100%;
+  }
+
+  .vm-economy__launcher-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .vm-economy-modal-backdrop {
+    padding: 0.5rem;
+    place-items: end;
+  }
+
+  .vm-economy-modal {
+    width: 100%;
+    max-height: min(96vh, 60rem);
+    border-radius: var(--vm-radius-md);
+  }
+
+  .vm-economy-modal__header {
+    flex-direction: column;
+  }
+
+  .vm-economy-modal__tabs {
+    grid-template-columns: 1fr;
+  }
+
+  /* Touch-friendly tab height inside modal */
+  .vm-economy-modal__tab {
+    min-height: 2.75rem;
+  }
+
+  /* Close button needs a solid tap target */
+  .vm-economy-modal__close {
+    align-self: flex-end;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+}
