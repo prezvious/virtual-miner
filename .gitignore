@@ -1,0 +1,16 @@
+node_modules/
+dist/
+
+.claude/
+
+concept/
+event-system.md
+missing-systems-gap-map.md
+unlimited-workers-system.md
+upgrade-system.md
+
+hero-stat-fix.jpg
+hero-stat-top-fix.jpg
+
+.DS_Store
+Thumbs.db
