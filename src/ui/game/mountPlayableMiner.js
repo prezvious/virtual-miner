@@ -1,8 +1,9 @@
-import siteContent from '../../data/siteContent.js';
+import gameContent from '../../data/gameContent.js';
 import { createGameStore } from '../../game/core/store.js';
 import { renderEconomyPanel, bindEconomyPanel } from './renderEconomyPanel.js';
 import { renderGameShell } from './renderGameShell.js';
 import { renderMinePanel, bindMinePanel } from './renderMinePanel.js';
+import { renderSystemsPanel, bindSystemsPanel } from './renderSystemsPanel.js';
 import { renderWorldPanel, bindWorldPanel } from './renderWorldPanel.js';
 
 export function mountPlayableMiner(container) {
@@ -17,9 +18,9 @@ export function mountPlayableMiner(container) {
   };
 
   const store = createGameStore({
-    biomes: siteContent.biomes ?? [],
-    rarityTiers: siteContent.systems?.rarityTiers ?? [],
-    offlineSystems: siteContent.systems?.offlineSystems ?? []
+    biomes: gameContent.biomes ?? [],
+    rarityTiers: gameContent.systems?.rarityTiers ?? [],
+    offlineSystems: gameContent.systems?.offlineSystems ?? []
   });
 
   let renderScheduled = false;
@@ -27,12 +28,53 @@ export function mountPlayableMiner(container) {
   let unsubscribe = () => {};
   let unbindShellControls = () => {};
 
+  /* ── Scroll-aware rendering ──
+   * Track whether the user is actively scrolling or touching.
+   * Defer innerHTML-based re-renders while interaction is live so the
+   * browser's native scroll tracking isn't killed by DOM destruction. */
+  let interactionActive = false;
+  let interactionTimer = null;
+  let deferredRender = false;
+
+  function markInteraction() {
+    interactionActive = true;
+    clearTimeout(interactionTimer);
+    interactionTimer = setTimeout(() => {
+      interactionActive = false;
+      if (deferredRender) {
+        deferredRender = false;
+        render();
+      }
+    }, 150);
+  }
+
+  function addScrollGuards() {
+    container.addEventListener('scroll', markInteraction, { capture: true, passive: true });
+    container.addEventListener('touchstart', markInteraction, { passive: true });
+    container.addEventListener('touchmove', markInteraction, { passive: true });
+    window.addEventListener('scroll', markInteraction, { passive: true });
+  }
+
+  function removeScrollGuards() {
+    container.removeEventListener('scroll', markInteraction, { capture: true });
+    container.removeEventListener('touchstart', markInteraction);
+    container.removeEventListener('touchmove', markInteraction);
+    window.removeEventListener('scroll', markInteraction);
+    clearTimeout(interactionTimer);
+  }
+
   try {
+    addScrollGuards();
+
     unsubscribe = store.subscribe(() => {
       if (!renderScheduled) {
         renderScheduled = true;
         window.requestAnimationFrame(() => {
           renderScheduled = false;
+          if (interactionActive) {
+            deferredRender = true;
+            return;
+          }
           render();
         });
       }
@@ -71,6 +113,7 @@ export function mountPlayableMiner(container) {
     unbindShellControls();
     unbindShellControls = () => {};
 
+    removeScrollGuards();
     delete container.dataset.vmGameBound;
     renderScheduled = false;
   }
@@ -78,9 +121,16 @@ export function mountPlayableMiner(container) {
   function render() {
     const state = store.getState();
 
-    const scrollTop = container.scrollTop;
+    /* Save all scroll positions:
+     * - window.scrollY: the real page scroll (on mobile, panels use overflow:visible
+     *   so the document scrolls, not the panel elements)
+     * - tabs scrollLeft: horizontal tab bar scroll on small screens
+     * - panel/aside scrollTop: used on desktop where aside has overflow-y:auto */
+    const windowScroll = window.scrollY;
+    const tabs = container.querySelector('.vm-game-shell__tabs');
     const mainPanel = container.querySelector('.vm-game-shell__panel');
     const aside = container.querySelector('.vm-game-shell__aside');
+    const tabsScroll = tabs ? tabs.scrollLeft : 0;
     const mainScroll = mainPanel ? mainPanel.scrollTop : 0;
     const asideScroll = aside ? aside.scrollTop : 0;
 
@@ -93,16 +143,23 @@ export function mountPlayableMiner(container) {
       minePanel: renderMinePanel(state),
       economyPanel: renderEconomyPanel(state, uiState),
       worldPanel: renderWorldPanel(state),
+      systemsPanel: renderSystemsPanel(state, gameContent.systems ?? {}),
       shortcutsOpen: uiState.shortcutsOpen
     });
 
     bindMinePanel(container, store);
     bindEconomyPanel(container, store);
     bindWorldPanel(container, store);
+    bindSystemsPanel(container, store);
 
-    container.scrollTop = scrollTop;
+    /* Restore all scroll positions */
+    window.scrollTo({ top: windowScroll, behavior: 'instant' });
+    const newTabs = container.querySelector('.vm-game-shell__tabs');
     const newMainPanel = container.querySelector('.vm-game-shell__panel');
     const newAside = container.querySelector('.vm-game-shell__aside');
+    if (newTabs) {
+      newTabs.scrollLeft = tabsScroll;
+    }
     if (newMainPanel) {
       newMainPanel.scrollTop = mainScroll;
     }
@@ -261,6 +318,9 @@ function wireShellControls(root, store, uiState, render) {
         break;
       case '3':
         invokeStoreAction(store, 'setTab', 'world');
+        break;
+      case '4':
+        invokeStoreAction(store, 'setTab', 'systems');
         break;
       case 'd':
         invokeStoreAction(store, 'mineOnce');

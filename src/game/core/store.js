@@ -15,8 +15,9 @@ import {
   applyOfflineEfficiencyDecay,
   getOfflineDepthEfficiency,
 } from '../utils/offline.js';
+import { formatLargeNumber } from '../utils/formatters.js';
 
-const TABS = new Set(['mine', 'economy', 'world']);
+const TABS = new Set(['mine', 'economy', 'world', 'systems']);
 
 const OFFLINE_REPORT_THRESHOLD_MS = 20_000;
 const MAX_SIMULATION_MS = 1000 * 60 * 60 * 8;
@@ -633,7 +634,7 @@ export function createGameStore({
           const level = getUpgradeLevel(draft, 'dynamite');
           const blastCost = Math.max(
             10,
-            Math.round((120 / (1 + 0.06 * level)) * (1 + draft.currentGlobalDepth / 20000))
+            Math.round((120 / (1 + 0.06 * level)) * (1 + draft.currentGlobalDepth / 20_000))
           );
 
           if (draft.credits < blastCost) {
@@ -793,7 +794,7 @@ export function createGameStore({
         }
 
         const dreamLevel = getUpgradeLevel(draft, 'dream-mining');
-        const elapsedHours = elapsedMs / 3600000;
+        const elapsedHours = elapsedMs / 3_600_000;
         const decayMult = applyOfflineEfficiencyDecay(elapsedHours);
         const effectiveEfficiency = Math.round(OFFLINE_SUBSYSTEM_EFFICIENCY.ore * decayMult * (1 + 0.005 * dreamLevel) * 100);
 
@@ -928,8 +929,8 @@ function createInitialState({ biomes, rarityTiers, offlineSystems }) {
     museumScore: 0,
 
     notifications: [
-      'Operations board online. Start mining and reinforce the bottleneck that appears first.',
-      `Current route: ${firstBiome.name}.`
+      'Mine ready. Start digging and upgrade the first bottleneck you hit.',
+      `Current zone: ${firstBiome.name}.`
     ],
     stats: {},
     offlineReport: null
@@ -1027,7 +1028,7 @@ function simulate(state, runtime, seconds, offlineContext = null) {
   let offlineEventEff = 1;
 
   if (isOffline) {
-    const elapsedHours = (offlineContext.totalElapsedMs ?? 0) / 3600000;
+    const elapsedHours = (offlineContext.totalElapsedMs ?? 0) / 3_600_000;
     const decayMult = applyOfflineEfficiencyDecay(elapsedHours);
     const dreamBonus = 1 + (0.005 * dreamMiningLevel);
 
@@ -1915,6 +1916,17 @@ function processIncidents(state, runtime, seconds) {
     remaining: Math.max(0, incident.remaining - seconds)
   }));
 
+  const expired = state.incidents.filter((i) => !i.resolved && i.remaining <= 0);
+  for (const incident of expired) {
+    const sev = incident.severity ?? 1;
+    state.workers.morale = clampNumber(state.workers.morale - (0.05 * sev), 0, 1);
+    state.workers.discipline = clampNumber(state.workers.discipline - (0.06 * sev), 0, 1);
+    state.workers.safetyRating = clampNumber(state.workers.safetyRating - (0.04 * sev), 0, 1);
+    state.credits = Math.max(0, state.credits - (12 * sev));
+    state.notifications.unshift(`Incident "${incident.name}" expired unresolved. Safety and morale suffered.`);
+    incident.resolved = true;
+  }
+
   if (runtime.incidentTimer > 0) {
     return;
   }
@@ -2535,7 +2547,7 @@ function buildMarketEntries(state, productionModel) {
   return Array.from(unique.values())
     .map((ore) => {
       const depthBoost = 1 + ((state.currentGlobalDepth / Math.max(1, state.totalDepth)) * 0.2);
-      const cycle = Math.sin((state.now / 180000) + ore.marketIndex);
+      const cycle = Math.sin((state.now / 180_000) + ore.marketIndex);
       const rarityMult = RARITY_MULTIPLIER[normalizeRarity(ore.rarity)] ?? 1;
       const eventMult = getMarketEventMultiplier(state, ore.rarity);
       const base = ore.basePrice * rarityMult * depthBoost * (1 + cycle * 0.1) * productionModel.refineryMult * eventMult;
@@ -2920,14 +2932,14 @@ function buildOfflineReport({
   ];
 
   return {
-    title: 'Operations Summary',
+    title: 'Away Summary',
     timeAway: formatDuration(elapsedMs),
     creditsEarned,
     highlightCount: recentFindCount + eventsTriggered,
     panels,
     summary:
-      `${shiftName} resolved ${formatMeters(depthGain)} depth gain with ${recentFindCount} logged finds. ` +
-      `${eventsTriggered} events fired during simulation and ${newIncidents} new incidents entered the board.`
+      `${shiftName} gained ${formatMeters(depthGain)} depth with ${recentFindCount} logged finds. ` +
+      `${eventsTriggered} events fired during the sim and ${newIncidents} new incidents appeared.`
   };
 }
 
@@ -2979,9 +2991,9 @@ function normalizeBiomes(biomes) {
       unlocked: biomeIndex === 0,
       globalDepth: {
         start: Number(biome.globalDepth?.start ?? 0),
-        end: Number(biome.globalDepth?.end ?? (Number(biome.globalDepth?.start ?? 0) + Number(biome.localDepthLimit ?? 128000)))
+        end: Number(biome.globalDepth?.end ?? (Number(biome.globalDepth?.start ?? 0) + Number(biome.localDepthLimit ?? 128_000)))
       },
-      localDepthLimit: Number(biome.localDepthLimit ?? 128000),
+      localDepthLimit: Number(biome.localDepthLimit ?? 128_000),
       signatureOre: biome.signatureOre ?? ores[0]?.name ?? 'Unknown ore'
     };
   });
@@ -3064,8 +3076,8 @@ function createFallbackBiome() {
     signatureOre: ore.name,
     signatureEconomy: 'Starter extraction economy',
     miningRule: 'Mine, sell, and upgrade.',
-    globalDepth: { start: 0, end: 128000 },
-    localDepthLimit: 128000,
+    globalDepth: { start: 0, end: 128_000 },
+    localDepthLimit: 128_000,
     hazards: [],
     ores: [ore],
     strata: [{ id: 'fallback-stratum', name: 'Starter Stratum', ores: [ore] }],
@@ -3144,11 +3156,11 @@ function clampNumber(value, min, max) {
 }
 
 function formatCredits(value) {
-  return `${Math.round(toNumber(value)).toLocaleString('en-US')} cr`;
+  return `${formatLargeNumber(value)} cr`;
 }
 
 function formatMeters(value) {
-  return `${Math.round(toNumber(value)).toLocaleString('en-US')} m`;
+  return `${formatLargeNumber(value)} m`;
 }
 
 function formatDuration(milliseconds) {
@@ -3221,7 +3233,7 @@ function saveToStorage(state) {
     };
     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
   } catch (_error) {
-    // Silent fail — localStorage may be full or unavailable
+    // Silent fail - localStorage may be full or unavailable
   }
 }
 

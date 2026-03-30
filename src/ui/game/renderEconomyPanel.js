@@ -1,8 +1,11 @@
+import { formatSimpleNumber, formatLargeNumber, escapeHtml, escapeAttr } from '../../game/utils/formatters.js';
+import { clampNumber } from '../../game/utils/math.js';
+
 export function renderEconomyPanel(state = {}, uiState = {}) {
   const inventory = normalizeInventory(state.inventory);
   const inventoryLoad = Number(state.inventoryLoad) || 0;
   const storageCap = Math.max(1, Number(state.storageCap) || 1);
-  const capacityRatio = clamp(inventoryLoad / storageCap, 0, 1);
+  const capacityRatio = clampNumber(inventoryLoad / storageCap, 0, 1);
   const credits = Number(state.credits) || 0;
   const lifetimeCredits = Number(state.lifetimeCredits) || 0;
   const marketEntries = normalizeMarketEntries(state.marketEntries);
@@ -22,12 +25,12 @@ export function renderEconomyPanel(state = {}, uiState = {}) {
       <header class="vm-economy__hero" data-surface="cta">
         <div class="vm-economy__hero-copy">
           <p class="vm-economy__eyebrow">Shop</p>
-          <h2 class="vm-economy__title">Sell ores, buy upgrades, and grow your mine!</h2>
+          <h2 class="vm-economy__title">Sell ore, buy upgrades, and scale the mine.</h2>
           <p class="vm-economy__copy">
             ${escapeHtml(
               highestPrice
                 ? `${highestPrice.name} sells for ${formatCredits(highestPrice.price)} right now.`
-                : 'Dig, sell, and upgrade to earn more coins!'
+                : 'Dig, sell, and reinvest to earn more coins.'
             )}
           </p>
         </div>
@@ -236,7 +239,7 @@ export function renderEconomyPanel(state = {}, uiState = {}) {
                 : `
                     <article class="vm-economy__empty">
                       <h4>No jobs available yet</h4>
-                      <p>Jobs unlock as your mine grows. Keep digging and hiring workers — new contracts will appear here. Hit <strong>New Jobs</strong> to refresh.</p>
+                      <p>Jobs unlock as your mine grows. Keep digging and hiring workers - new contracts will appear here. Hit <strong>New Jobs</strong> to refresh.</p>
                     </article>
                   `
             }
@@ -263,7 +266,7 @@ export function renderEconomyPanel(state = {}, uiState = {}) {
                           <div class="vm-economy__card-head">
                             <div>
                               <h4>${escapeHtml(batch.outputName)}</h4>
-                              <p>${escapeHtml(`${batch.inputUnits} in → ${batch.outputUnits} out`)}</p>
+                              <p>${escapeHtml(`${batch.inputUnits} in -> ${batch.outputUnits} out`)}</p>
                             </div>
                             <span class="vm-economy__level">${escapeHtml(batch.outputRarity)}</span>
                           </div>
@@ -542,7 +545,7 @@ function normalizeContracts(contracts) {
         reward: Number(contract.reward) || 0,
         target,
         progress,
-        progressRatio: clamp(progress / target, 0, 1),
+        progressRatio: clampNumber(progress / target, 0, 1),
         claimable: Boolean(contract.claimable),
         timer: `${Math.ceil(remaining)}s`
       };
@@ -567,18 +570,9 @@ function normalizeRefineryQueue(queue) {
         inputUnits: Number(batch.inputUnits) || 0,
         outputUnits: Number(batch.outputUnits) || 0,
         remaining,
-        progressRatio: clamp(1 - (remaining / baseDuration), 0, 1)
+        progressRatio: clampNumber(1 - (remaining / baseDuration), 0, 1)
       };
     });
-}
-
-function formatSimpleNumber(value) {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) {
-    return '0';
-  }
-
-  return Math.round(numeric).toLocaleString('en-US');
 }
 
 function formatCredits(value) {
@@ -586,7 +580,7 @@ function formatCredits(value) {
   if (!Number.isFinite(numeric)) {
     return '0 coins';
   }
-  return `${Math.round(numeric).toLocaleString('en-US')} coins`;
+  return `${formatLargeNumber(numeric)} coins`;
 }
 
 function rarityClass(label) {
@@ -602,24 +596,4 @@ function readableLabel(value) {
     .replace(/[-_]+/g, ' ')
     .replace(/\b\w/g, (match) => match.toUpperCase())
     .trim();
-}
-
-function clamp(value, min, max) {
-  if (!Number.isFinite(value)) {
-    return min;
-  }
-  return Math.min(Math.max(value, min), max);
-}
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-function escapeAttr(value) {
-  return escapeHtml(value).replaceAll('`', '&#96;');
 }

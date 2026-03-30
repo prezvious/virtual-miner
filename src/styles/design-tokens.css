@@ -103,13 +103,6 @@
   --vm-ease-snug: cubic-bezier(0.3, 0.7, 0.2, 1);
   --vm-ease-emphasis: cubic-bezier(0.16, 1, 0.3, 1);
 
-  --vm-hero-tint: transparent;
-  --vm-loop-tint: transparent;
-  --vm-systems-tint: transparent;
-  --vm-world-tint: transparent;
-  --vm-roadmap-tint: transparent;
-  --vm-cta-tint: transparent;
-
   /* Compatibility aliases */
   --page-width: var(--vm-page-max);
   --bg: var(--vm-color-bg);

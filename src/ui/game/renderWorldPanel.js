@@ -1,3 +1,6 @@
+import { formatMeters, formatSimpleNumber, escapeHtml, escapeAttr } from '../../game/utils/formatters.js';
+import { clampNumber } from '../../game/utils/math.js';
+
 const BREAKPOINT_ORDER = [
   { key: 'foreman', workers: 10, label: 'First Boss' },
   { key: 'secondShift', workers: 25, label: 'Night Shift' },
@@ -20,10 +23,10 @@ export function renderWorldPanel(state = {}) {
     <section class="vm-world" aria-label="World and operations board">
       <header class="vm-world__hero">
         <div>
-          <p class="vm-world__eyebrow">World Map</p>
+          <p class="vm-world__eyebrow">World</p>
           <h3 class="vm-world__title">Explore zones and grow your team</h3>
           <p class="vm-world__copy">
-            Travel to new zones, unlock cool stuff, and build your mining team.
+            Open new zones, grow your crew, and plan the next depth push.
           </p>
         </div>
         <dl class="vm-world__hero-metrics">
@@ -143,18 +146,18 @@ export function renderWorldPanel(state = {}) {
           <div>
             <p class="vm-world__kicker">Mining Depth</p>
             <h4>Choose how deep to dig</h4>
-          </div>
-          <strong>${escapeHtml(depthSummary.current)}</strong>
         </div>
+        <strong>${escapeHtml(depthSummary.current)}</strong>
+      </div>
         <label class="vm-world__slider-label" for="vm-local-depth-input">
-          ${escapeHtml(renderDepthStratumLabel(state.localDepth, state.selectedBiome?.localDepth))}
+          ${escapeHtml(renderDepthStratumLabel(state.localDepth, state.selectedBiome?.localDepthLimit))}
         </label>
         <input
           id="vm-local-depth-input"
           class="vm-world__slider"
           type="range"
           min="0"
-          max="${escapeAttr(String(Number(state.selectedBiome?.localDepth) || 0))}"
+          max="${escapeAttr(String(Number(state.selectedBiome?.localDepthLimit) || 0))}"
           value="${escapeAttr(String(Number(state.localDepth) || 0))}"
           step="500"
           data-action="set-local-depth"
@@ -166,7 +169,7 @@ export function renderWorldPanel(state = {}) {
           <span>Deep</span>
           <span>Extreme</span>
         </div>
-        <p class="vm-world__copy">${escapeHtml(renderDepthHint(state.localDepth, state.selectedBiome?.localDepth))}</p>
+        <p class="vm-world__copy">${escapeHtml(renderDepthHint(state.localDepth, state.selectedBiome?.localDepthLimit))}</p>
       </section>
 
       <section class="vm-world__panel">
@@ -224,7 +227,7 @@ export function renderWorldPanel(state = {}) {
             : `
               <article class="vm-world__empty">
                 <h5>No events in your history</h5>
-                <p>Special events appear as you mine. Events can double your drops, unlock bonuses, or create challenges — keep digging!</p>
+                <p>Special events appear as you mine. Events can boost drops, unlock bonuses, or create challenges - keep digging.</p>
               </article>
             `
         }
@@ -244,7 +247,7 @@ function normalizeBiomes(input) {
   }
 
   return input.map((biome) => {
-    const progress = clamp(Number(biome.progressRatio), 0, 1);
+    const progress = clampNumber(Number(biome.progressRatio), 0, 1);
     return {
       id: biome.id || '',
       name: biome.name || 'Unknown zone',
@@ -285,7 +288,7 @@ function normalizeCrewMix(rawCrews, headcount) {
   ];
 
   return roles.map(([key, label]) => {
-    const ratio = clamp(Number(crews[key]), 0, 1);
+    const ratio = clampNumber(Number(crews[key]), 0, 1);
     const rawPercent = Math.round(ratio * 100);
     return {
       role: key,
@@ -300,19 +303,19 @@ function normalizeCrewMix(rawCrews, headcount) {
 function renderDepthStratumLabel(localDepth, maxDepth) {
   const max = Number(maxDepth) || 1;
   const depth = Number(localDepth) || 0;
-  const ratio = clamp(depth / max, 0, 1);
+  const ratio = clampNumber(depth / max, 0, 1);
 
-  if (ratio < 0.15) return 'Surface layer — mostly common ores';
-  if (ratio < 0.35) return 'Shallow layer — uncommon finds start here';
-  if (ratio < 0.55) return 'Mid layer — rare ores become available';
-  if (ratio < 0.75) return 'Deep layer — epic and legendary deposits';
-  return 'Extreme depth — mythic ores and rich veins';
+  if (ratio < 0.15) return 'Surface layer - mostly common ores';
+  if (ratio < 0.35) return 'Shallow layer - uncommon finds start here';
+  if (ratio < 0.55) return 'Mid layer - rare ores become available';
+  if (ratio < 0.75) return 'Deep layer - epic and legendary deposits';
+  return 'Extreme depth - mythic ores and rich veins';
 }
 
 function renderDepthHint(localDepth, maxDepth) {
   const max = Number(maxDepth) || 1;
   const depth = Number(localDepth) || 0;
-  const ratio = clamp(depth / max, 0, 1);
+  const ratio = clampNumber(depth / max, 0, 1);
 
   if (ratio < 0.15) return 'Dig deeper to find better ores. Deeper = rarer drops.';
   if (ratio < 0.55) return 'Going deeper costs more stability. Balance depth with mine health.';
@@ -369,41 +372,3 @@ function formatDepthLabel(depth) {
   return `${Math.round(start).toLocaleString('en-US')}m - ${Math.round(end).toLocaleString('en-US')}m`;
 }
 
-function formatMeters(value) {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) {
-    return '0 m';
-  }
-
-  return `${Math.round(numeric).toLocaleString('en-US')} m`;
-}
-
-function formatSimpleNumber(value) {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) {
-    return '0';
-  }
-
-  return Math.round(numeric).toLocaleString('en-US');
-}
-
-function clamp(value, min, max) {
-  if (!Number.isFinite(value)) {
-    return min;
-  }
-
-  return Math.min(Math.max(value, min), max);
-}
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-function escapeAttr(value) {
-  return escapeHtml(value).replaceAll('`', '&#96;');
-}

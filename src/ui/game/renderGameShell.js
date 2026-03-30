@@ -1,21 +1,30 @@
+import { formatSimpleNumber, formatLargeNumber, escapeHtml, escapeAttr } from '../../game/utils/formatters.js';
+import { clampNumber } from '../../game/utils/math.js';
+
 const TAB_DEFS = [
   {
     id: 'mine',
-    label: 'Mining',
-    kicker: 'Dig for treasure',
-    summary: 'Dig for ores, handle dangers, and join special events.'
+    label: 'Mine',
+    kicker: 'Dig and react',
+    summary: 'Mine ore, handle hazards, and catch active events.'
   },
   {
     id: 'economy',
     label: 'Shop',
-    kicker: 'Buy and sell',
-    summary: 'Sell your ores, buy upgrades, and earn more coins.'
+    kicker: 'Sell and upgrade',
+    summary: 'Turn ore into coins, upgrades, contracts, and refinery output.'
   },
   {
     id: 'world',
-    label: 'World Map',
-    kicker: 'Explore new areas',
-    summary: 'Travel to new zones, reach goals, and plan your adventure.'
+    label: 'World',
+    kicker: 'Zones and crew',
+    summary: 'Open new zones, manage workers, and plan your next depth push.'
+  },
+  {
+    id: 'systems',
+    label: 'Systems',
+    kicker: 'Rules and goals',
+    summary: 'Learn the loop, check progress rules, and see good next targets.'
   }
 ];
 
@@ -24,6 +33,7 @@ export function renderGameShell({
   minePanel = '',
   economyPanel = '',
   worldPanel = '',
+  systemsPanel = '',
   shortcutsOpen = false
 } = {}) {
   const activeTab = normalizeTab(state.activeTab);
@@ -41,20 +51,20 @@ export function renderGameShell({
   const eventCard = normalizeEventCard(state.activeEvent);
 
   return `
-    <section class="vm-game" data-active-tab="${escapeAttr(activeTab)}" aria-label="Virtual Miner game shell">
+    <section class="vm-game" data-active-tab="${escapeAttr(activeTab)}" aria-label="Virtual Miner">
       <div class="vm-game-shell" data-active-tab="${escapeAttr(activeTab)}">
-        <header class="vm-game-shell__hud" aria-label="Run summary">
+        <header class="vm-game-shell__hud" aria-label="Game summary">
           <section class="vm-game-command">
-            <p class="vm-game-command__eyebrow">Your Mining Base</p>
+            <p class="vm-game-command__eyebrow">Mine Base</p>
             <div class="vm-game-command__headline">
               <div>
                 <h1 class="vm-game-command__title">Virtual Miner</h1>
                 <p class="vm-game-command__copy">
-                  Run your own mine! Manage workers, face dangers, complete jobs, and join special events.
+                  Dig, sell, upgrade, unlock zones, and keep the mine earning even while you are away.
                 </p>
               </div>
               <div class="vm-game-command__focus">
-                <span class="vm-game-command__focus-label">Current zone</span>
+                <span class="vm-game-command__focus-label">Zone</span>
                 <strong class="vm-game-command__focus-value">${escapeHtml(selectedBiome)}</strong>
               </div>
             </div>
@@ -64,20 +74,20 @@ export function renderGameShell({
             <article class="vm-game-metric-card">
               <span class="vm-game-metric-card__label">Coins</span>
               <strong class="vm-game-metric-card__value">${escapeHtml(credits)}</strong>
-              <span class="vm-game-metric-card__detail">Money you can spend on upgrades, helpers, and workers.</span>
+              <span class="vm-game-metric-card__detail">Spend coins on upgrades, buildings, and worker growth.</span>
             </article>
             <article class="vm-game-metric-card">
               <span class="vm-game-metric-card__label">Total earned</span>
               <strong class="vm-game-metric-card__value">${escapeHtml(lifetimeCredits)}</strong>
-              <span class="vm-game-metric-card__detail">All the coins you've ever earned.</span>
+              <span class="vm-game-metric-card__detail">Your full all-time coin total.</span>
             </article>
             <article class="vm-game-metric-card">
-              <span class="vm-game-metric-card__label">Backpack space</span>
+              <span class="vm-game-metric-card__label">Storage</span>
               <strong class="vm-game-metric-card__value">${escapeHtml(`${inventoryLoad} / ${carryingCapacity}`)}</strong>
               <span class="vm-game-metric-card__detail">${escapeHtml(formatPercent(capacityRatio))} full.</span>
             </article>
             <article class="vm-game-metric-card">
-              <span class="vm-game-metric-card__label">Jobs ready</span>
+              <span class="vm-game-metric-card__label">Rewards ready</span>
               <strong class="vm-game-metric-card__value">${escapeHtml(String(contracts.ready))}</strong>
               <span class="vm-game-metric-card__detail">${escapeHtml(contracts.detail)}</span>
             </article>
@@ -130,7 +140,7 @@ export function renderGameShell({
           }
         </header>
 
-        <nav class="vm-game-shell__tabs" role="tablist" aria-label="Gameplay surfaces">
+        <nav class="vm-game-shell__tabs" role="tablist" aria-label="Game tabs">
           ${TAB_DEFS.map((tab) => renderTabButton(tab, activeTab)).join('')}
         </nav>
 
@@ -138,9 +148,10 @@ export function renderGameShell({
           ${renderSurface(TAB_DEFS[0], activeTab, minePanel)}
           ${renderSurface(TAB_DEFS[1], activeTab, economyPanel)}
           ${renderSurface(TAB_DEFS[2], activeTab, worldPanel)}
+          ${renderSurface(TAB_DEFS[3], activeTab, systemsPanel)}
         </main>
 
-        <aside class="vm-game-shell__aside" aria-label="Run intelligence">
+        <aside class="vm-game-shell__aside" aria-label="Status board">
           <section class="vm-game-sidecard vm-game-sidecard--cargo">
             <div class="vm-game-sidecard__header">
               <p class="vm-game-sidecard__eyebrow">Backpack</p>
@@ -215,7 +226,7 @@ export function renderGameShell({
               ? `
                 <section class="vm-game-sidecard">
                   <div class="vm-game-sidecard__header">
-                    <p class="vm-game-sidecard__eyebrow">Activity</p>
+                    <p class="vm-game-sidecard__eyebrow">Status</p>
                     <strong class="vm-game-sidecard__title">Recent updates</strong>
                   </div>
                   ${
@@ -455,7 +466,7 @@ function normalizeEventCard(activeEvent) {
 }
 
 function getCapacityRatio(explicitRatio, load, capacity) {
-  const normalizedExplicit = clamp(Number(explicitRatio), 0, 1);
+  const normalizedExplicit = clampNumber(Number(explicitRatio), 0, 1);
   if (Number.isFinite(normalizedExplicit)) {
     return normalizedExplicit;
   }
@@ -467,20 +478,15 @@ function getCapacityRatio(explicitRatio, load, capacity) {
     return 0;
   }
 
-  return clamp(safeLoad / safeCapacity, 0, 1);
+  return clampNumber(safeLoad / safeCapacity, 0, 1);
 }
 
 function formatCredits(value) {
   const amount = Number(value);
-
   if (!Number.isFinite(amount)) {
     return '0 coins';
   }
-
-  return `${new Intl.NumberFormat('en-US', {
-    notation: Math.abs(amount) >= 10000 ? 'compact' : 'standard',
-    maximumFractionDigits: Math.abs(amount) >= 10000 ? 1 : 0
-  }).format(amount)} coins`;
+  return `${formatLargeNumber(amount)} coins`;
 }
 
 function formatNumber(value) {
@@ -488,13 +494,8 @@ function formatNumber(value) {
   return Number.isFinite(amount) ? amount.toLocaleString('en-US') : '0';
 }
 
-function formatSimpleNumber(value) {
-  const amount = Number(value);
-  return Number.isFinite(amount) ? Math.round(amount).toLocaleString('en-US') : '0';
-}
-
 function formatPercent(value) {
-  return `${Math.round(clamp(value, 0, 1) * 100)}%`;
+  return `${Math.round(clampNumber(value, 0, 1) * 100)}%`;
 }
 
 function humanizeKey(value) {
@@ -510,32 +511,12 @@ function firstString(...values) {
   return values.find((value) => typeof value === 'string' && value.trim())?.trim() || '';
 }
 
-function clamp(value, min, max) {
-  if (!Number.isFinite(value)) {
-    return min;
-  }
-
-  return Math.min(Math.max(value, min), max);
-}
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-function escapeAttr(value) {
-  return escapeHtml(value).replaceAll('`', '&#96;');
-}
-
 function renderShortcutsOverlay() {
   const shortcuts = [
-    ['1', 'Mining tab'],
+    ['1', 'Mine tab'],
     ['2', 'Shop tab'],
-    ['3', 'World Map tab'],
+    ['3', 'World tab'],
+    ['4', 'Systems tab'],
     ['D', 'Dig for ore'],
     ['B', 'Use dynamite'],
     ['S', 'Sell all items'],

@@ -71,7 +71,7 @@
 }
 
 .vm-game-command__headline::after {
-  content: "SHIFT 07  |  PIT CONTROL";
+  content: "LIVE RUN  |  SAVE ACTIVE";
   justify-self: start;
   display: inline-flex;
   align-items: center;
@@ -190,9 +190,7 @@
 .vm-game-sidecard__button,
 .vm-economy__primary,
 .vm-economy__secondary,
-.vm-world button,
-.atlas-app button,
-.overview-trigger {
+.vm-world button {
   position: relative;
   isolation: isolate;
   border: 1px solid var(--vm-color-border);
@@ -227,11 +225,7 @@
 .vm-economy__secondary:hover:not(:disabled),
 .vm-economy__secondary:focus-visible,
 .vm-world button:hover:not(:disabled),
-.vm-world button:focus-visible,
-.atlas-app button:hover:not(:disabled),
-.atlas-app button:focus-visible,
-.overview-trigger:hover,
-.overview-trigger:focus-visible {
+.vm-world button:focus-visible {
   transform: translateY(-1px);
   box-shadow: var(--vm-shadow-sm);
 }
@@ -270,7 +264,7 @@
   color: var(--vm-color-ink-soft);
 }
 
-/* Tabs — sticky so the tab bar stays accessible while scrolling game content */
+/* Tabs - sticky so the tab bar stays accessible while scrolling game content */
 .vm-game-shell__tabs {
   position: sticky;
   top: var(--vm-tabs-sticky-top, 0px);
@@ -514,6 +508,12 @@
 [data-active-tab="world"] .vm-game-surface__eyebrow,
 [data-active-tab="world"] .vm-game-tab.is-active .vm-game-tab__label {
   color: var(--vm-color-depth);
+}
+
+[data-active-tab="systems"] .vm-game-command__focus-value,
+[data-active-tab="systems"] .vm-game-surface__eyebrow,
+[data-active-tab="systems"] .vm-game-tab.is-active .vm-game-tab__label {
+  color: var(--vm-color-mineral);
 }
 
 /* Focus ring */

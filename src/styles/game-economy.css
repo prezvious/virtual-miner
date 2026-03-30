@@ -368,10 +368,13 @@
 .vm-economy-modal-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 90;
+  z-index: 240;
   display: none;
-  place-items: center;
-  padding: clamp(0.75rem, 2.5vw, 1.5rem);
+  place-items: start center;
+  padding:
+    max(7.5rem, 14vh)
+    clamp(0.75rem, 2.5vw, 1.5rem)
+    clamp(0.75rem, 2.5vw, 1.5rem);
 }
 
 .vm-economy-modal-backdrop.is-open {
@@ -388,6 +391,7 @@
 
 .vm-economy-modal {
   position: relative;
+  z-index: 1;
   width: min(100%, 66rem);
   max-height: min(90vh, 54rem);
   display: grid;

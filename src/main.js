@@ -1,14 +1,14 @@
-﻿import './style.css';
+import './style.css';
 import './styles/design-tokens.css';
 import './styles/game-shell.css';
 import './styles/game-mine.css';
 import './styles/game-world.css';
 import './styles/game-economy.css';
+import './styles/game-systems.css';
 import './styles/game-responsive.css';
 
-import siteContent from './data/siteContent.js';
+import gameContent from './data/gameContent.js';
 import { mountPlayableMiner } from './ui/game/mountPlayableMiner.js';
-import { renderVirtualMinerSite } from './ui/renderVirtualMinerSite.js';
 
 const PLAYABLE_SAVE_KEY = 'virtual-miner-save';
 
@@ -18,7 +18,7 @@ if (!app) {
   throw new Error('Virtual Miner could not mount because #app was not found.');
 }
 
-const meta = siteContent.meta ?? {};
+const meta = gameContent.meta ?? {};
 document.title = meta.title || 'Virtual Miner';
 if (meta.description) {
   let tag = document.querySelector('meta[name="description"]');
@@ -30,47 +30,37 @@ if (meta.description) {
   tag.setAttribute('content', meta.description);
 }
 
-// Render the full landing page — the game mounts inside [data-playable-root]
-app.innerHTML = renderVirtualMinerSite(siteContent);
+app.innerHTML = '';
+app.classList.add('vm-playable--fullscreen');
 
-const playableRoot = app.querySelector('[data-playable-root]');
-const gameMount = playableRoot ?? app;
-
-if (!playableRoot) {
-  // Fallback: fullscreen game if site shell didn't produce a playable root
-  gameMount.classList.add('vm-playable--fullscreen');
-}
-
-const mountOutcome = mountPlayableWithRecovery(gameMount, { allowSaveReset: true });
+const mountOutcome = mountPlayableWithRecovery(app, { allowSaveReset: true });
 
 if (!mountOutcome.ok) {
-  gameMount.setAttribute('data-playable-state', 'fallback');
-  gameMount.innerHTML = renderPlayableFallback({
-    title: 'Command deck is temporarily unavailable.',
+  app.setAttribute('data-playable-state', 'fallback');
+  app.innerHTML = renderPlayableFallback({
+    title: 'Game could not start.',
     copy: mountOutcome.resetAttempted
-      ? 'Automatic recovery failed. You can retry the command deck or reset local deck data.'
-      : 'Something went wrong loading the game. Try resetting your save data.'
+      ? 'The local save was cleared, but the game still could not load. You can try again or clear the save once more.'
+      : 'Something went wrong while loading the local save. Try again or clear the save data.'
   });
-  bindPlayableFallbackActions(gameMount);
+  bindPlayableFallbackActions(app);
 }
 
 function renderPlayableFallback({
-  title = 'Command deck is temporarily unavailable.',
-  copy = 'The landing experience is still available while the playable runtime is being recovered.'
+  title = 'Game could not start.',
+  copy = 'The save data could not be loaded right now.'
 } = {}) {
   return `
-    <article class="vm-card vm-stack vm-playable__fallback" role="status" aria-live="polite">
-      <p class="vm-eyebrow">Playable Surface Offline</p>
-      <h3 class="vm-subtitle">${escapeHtml(title)}</h3>
-      <p class="vm-copy">
-        ${escapeHtml(copy)}
-      </p>
-      <div class="vm-actions">
-        <button class="vm-button vm-button--ghost" type="button" data-action="retry-playable-mount">
-          Retry command deck
+    <article class="vm-fallback" role="status" aria-live="polite">
+      <p class="vm-fallback__eyebrow">Save Load Error</p>
+      <h1 class="vm-fallback__title">${escapeHtml(title)}</h1>
+      <p class="vm-fallback__copy">${escapeHtml(copy)}</p>
+      <div class="vm-fallback__actions">
+        <button class="vm-fallback__button" type="button" data-action="retry-playable-mount">
+          Retry game
         </button>
-        <button class="vm-button vm-button--ghost" type="button" data-action="reset-playable-save">
-          Reset deck data
+        <button class="vm-fallback__button vm-fallback__button--ghost" type="button" data-action="reset-playable-save">
+          Clear local save
         </button>
       </div>
     </article>
@@ -101,7 +91,7 @@ function mountPlayable(root, stage) {
     root.removeAttribute('data-playable-state');
     return { ok: true };
   } catch (error) {
-    console.error(`Virtual Miner playable surface failed during ${stage}.`, error);
+    console.error(`Virtual Miner game failed during ${stage}.`, error);
     return { ok: false, error };
   }
 }
@@ -140,8 +130,8 @@ function bindPlayableFallbackActions(root) {
 
     root.setAttribute('data-playable-state', 'fallback');
     root.innerHTML = renderPlayableFallback({
-      title: 'Command deck is still unavailable.',
-      copy: 'The deck could not be recovered yet. Try again after a refresh.'
+      title: 'Game is still unavailable.',
+      copy: 'The local save could not be recovered yet. Refresh the page and try again.'
     });
   });
 }

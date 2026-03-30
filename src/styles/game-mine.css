@@ -310,7 +310,7 @@
   width: 0.5em;
   height: 0.5em;
   border-radius: 50%;
-  background: #9ca3af;
+  background: var(--vm-color-ink-muted);
   flex-shrink: 0;
 }
 

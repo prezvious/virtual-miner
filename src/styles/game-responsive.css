@@ -19,7 +19,8 @@
   .vm-game-shell__aside,
   .vm-mine,
   .vm-economy,
-  .vm-world
+  .vm-world,
+  .vm-systems-panel
 ) {
   min-width: 0;
 }
@@ -62,14 +63,14 @@
 }
 
 /* Panels */
-:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world) {
+:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world, .vm-systems-panel) {
   display: grid;
   gap: var(--vm-game-gap);
   min-width: 0;
   align-content: start;
 }
 
-/* Panel: let the page (#app) scroll — no nested scroll container on mobile/tablet */
+/* Panel: let the page (#app) scroll - no nested scroll container on mobile/tablet */
 :where(.vm-game-shell__panel) {
   overflow-y: visible;
 }
@@ -79,23 +80,23 @@
   overflow-y: visible;
 }
 
-:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world) > * {
+:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world, .vm-systems-panel) > * {
   min-width: 0;
   max-width: 100%;
 }
 
 /* Text wrapping */
-:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world)
+:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world, .vm-systems-panel)
   :where(h1, h2, h3, h4, p, li, dt, dd, figcaption, span, strong, em) {
   overflow-wrap: anywhere;
 }
 
-:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world)
+:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world, .vm-systems-panel)
   :where(h1, h2, h3) {
   text-wrap: balance;
 }
 
-:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world)
+:where(.vm-game-shell__panel, .vm-game-shell__aside, .vm-mine, .vm-economy, .vm-world, .vm-systems-panel)
   :where(p, li, dt, dd, figcaption) {
   text-wrap: pretty;
 }
@@ -410,7 +411,7 @@
     overflow-y: auto;
   }
 
-  :where(.vm-mine, .vm-economy, .vm-world) {
+  :where(.vm-mine, .vm-economy, .vm-world, .vm-systems-panel) {
     gap: var(--vm-game-gap-lg);
   }
 }
@@ -419,14 +420,5 @@
 @media (min-width: 90rem) {
   :where(.vm-game-shell) {
     grid-template-columns: minmax(0, 1.2fr) minmax(21rem, 26rem);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :where(.vm-game, .vm-game *) {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 }

@@ -1,3 +1,6 @@
+import { formatMeters, formatSimpleNumber, formatLargeNumber, escapeHtml, escapeAttr } from '../../game/utils/formatters.js';
+import { clampNumber } from '../../game/utils/math.js';
+
 const SHIFT_ORDER = ['day', 'night', 'overtime', 'safe', 'deep', 'contract'];
 const SHIFT_LABELS = {
   day: 'Day',
@@ -304,7 +307,7 @@ function normalizeMineState(mineState) {
   ];
 
   return entries.map(([key, label]) => {
-    const numeric = clamp(Number(source[key]), 0, 1);
+    const numeric = clampNumber(Number(source[key]), 0, 1);
     return {
       key,
       label,
@@ -367,7 +370,7 @@ function normalizeFinds(recentFinds) {
     .slice(0, 8)
     .map((find) => {
       const tierLabel = find.tierName ?? find.rarity ?? 'common';
-      const luckyTag = find.luckyStrike ? ' ★' : '';
+      const luckyTag = find.luckyStrike ? ' * Lucky' : '';
       return {
         name: find.name || 'Unknown item',
         rarity: find.rarity || 'common',
@@ -377,46 +380,10 @@ function normalizeFinds(recentFinds) {
     });
 }
 
-function formatMeters(value) {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) {
-    return '0 m';
-  }
-  return `${Math.round(numeric).toLocaleString('en-US')} m`;
-}
-
 function formatCredits(value) {
   const numeric = Number(value);
   if (!Number.isFinite(numeric)) {
     return '0 coins';
   }
-  return `${Math.round(numeric).toLocaleString('en-US')} coins`;
-}
-
-function formatSimpleNumber(value) {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) {
-    return '0';
-  }
-  return Math.round(numeric).toLocaleString('en-US');
-}
-
-function clamp(value, min, max) {
-  if (!Number.isFinite(value)) {
-    return min;
-  }
-  return Math.min(Math.max(value, min), max);
-}
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-function escapeAttr(value) {
-  return escapeHtml(value).replaceAll('`', '&#96;');
+  return `${formatLargeNumber(numeric)} coins`;
 }

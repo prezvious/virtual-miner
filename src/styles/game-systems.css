@@ -1,0 +1,272 @@
+.vm-systems-panel {
+  display: grid;
+  gap: var(--vm-space-md);
+}
+
+.vm-systems-panel__hero,
+.vm-systems-panel__panel,
+.vm-systems-panel__card,
+.vm-systems-panel__loop-item,
+.vm-systems-panel__band,
+.vm-systems-panel__goal,
+.vm-systems-panel__rarity-zone {
+  border: 1px solid var(--vm-color-border);
+  border-radius: var(--vm-radius-lg);
+  background: #fff;
+  box-shadow: var(--vm-shadow-xs);
+}
+
+.vm-systems-panel__hero {
+  display: grid;
+  gap: var(--vm-space-md);
+  padding: clamp(1rem, 1vw + 0.8rem, 1.4rem);
+  background:
+    radial-gradient(circle at top right, rgba(15, 118, 110, 0.12), transparent 36%),
+    linear-gradient(180deg, #fcfdfd 0%, #f5faf8 100%);
+}
+
+.vm-systems-panel__eyebrow,
+.vm-systems-panel__kicker,
+.vm-systems-panel__metrics dt,
+.vm-systems-panel__card-index,
+.vm-systems-panel__loop-step,
+.vm-systems-panel__goal-head span,
+.vm-systems-panel__band-head span,
+.vm-systems-panel__table th,
+.vm-systems-panel__rarity-zone strong {
+  margin: 0;
+  font-family: var(--vm-font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.vm-systems-panel__eyebrow,
+.vm-systems-panel__kicker,
+.vm-systems-panel__card-index,
+.vm-systems-panel__loop-step {
+  color: var(--vm-color-mineral);
+}
+
+.vm-systems-panel__title {
+  margin: 0;
+  font-family: var(--vm-font-display);
+  font-size: clamp(1.4rem, 1.2rem + 0.8vw, 2rem);
+  line-height: 1;
+  color: var(--vm-color-ink-strong);
+}
+
+.vm-systems-panel__copy,
+.vm-systems-panel__section-head p,
+.vm-systems-panel__card p,
+.vm-systems-panel__loop-item p,
+.vm-systems-panel__band p,
+.vm-systems-panel__goal p,
+.vm-systems-panel__bullets li {
+  margin: 0;
+  color: var(--vm-color-ink-soft);
+}
+
+.vm-systems-panel__metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  gap: var(--vm-space-sm);
+  margin: 0;
+}
+
+.vm-systems-panel__metrics div {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--vm-color-border);
+  border-radius: var(--vm-radius-md);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.vm-systems-panel__metrics dd {
+  margin: 0;
+  font-family: var(--vm-font-display);
+  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.25rem);
+  color: var(--vm-color-ink-strong);
+}
+
+.vm-systems-panel__section {
+  display: grid;
+  gap: var(--vm-space-sm);
+}
+
+.vm-systems-panel__section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--vm-space-sm);
+}
+
+.vm-systems-panel__section-head h4,
+.vm-systems-panel__card h5,
+.vm-systems-panel__loop-item h5,
+.vm-systems-panel__panel h4,
+.vm-systems-panel__rarity-zone h5,
+.vm-systems-panel__band-head strong,
+.vm-systems-panel__goal-head h5 {
+  margin: 0;
+  color: var(--vm-color-ink-strong);
+}
+
+.vm-systems-panel__section-head h4,
+.vm-systems-panel__panel h4 {
+  font-family: var(--vm-font-display);
+  font-size: clamp(1.05rem, 0.98rem + 0.3vw, 1.3rem);
+  line-height: 1.05;
+}
+
+.vm-systems-panel__card-grid,
+.vm-systems-panel__grid-two {
+  display: grid;
+  gap: var(--vm-space-sm);
+}
+
+.vm-systems-panel__card-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+}
+
+.vm-systems-panel__card-grid--wide {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.vm-systems-panel__card,
+.vm-systems-panel__panel,
+.vm-systems-panel__band,
+.vm-systems-panel__goal,
+.vm-systems-panel__rarity-zone {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.95rem 1rem;
+}
+
+.vm-systems-panel__card {
+  align-content: start;
+}
+
+.vm-systems-panel__card-index {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.2rem 0.45rem;
+  border-radius: var(--vm-radius-pill);
+  background: rgba(15, 118, 110, 0.08);
+}
+
+.vm-systems-panel__loop {
+  display: grid;
+  gap: var(--vm-space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vm-systems-panel__loop-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.9rem;
+  align-items: start;
+  padding: 0.95rem 1rem;
+}
+
+.vm-systems-panel__loop-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: var(--vm-radius-pill);
+  background: rgba(15, 118, 110, 0.08);
+}
+
+.vm-systems-panel__table-wrap {
+  overflow-x: auto;
+}
+
+.vm-systems-panel__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vm-systems-panel__table th,
+.vm-systems-panel__table td {
+  padding: 0.7rem 0.75rem;
+  border-bottom: 1px solid var(--vm-color-border);
+  text-align: left;
+}
+
+.vm-systems-panel__table td {
+  color: var(--vm-color-ink-soft);
+  font-size: 0.92rem;
+}
+
+.vm-systems-panel__bullets,
+.vm-systems-panel__rarity-zone ul {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.vm-systems-panel__rarity-zones,
+.vm-systems-panel__bands,
+.vm-systems-panel__goals {
+  display: grid;
+  gap: var(--vm-space-sm);
+}
+
+.vm-systems-panel__rarity-zone ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.vm-systems-panel__rarity-zone li,
+.vm-systems-panel__goal-head,
+.vm-systems-panel__band-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.vm-systems-panel__rarity-zone li {
+  padding-top: 0.15rem;
+  border-top: 1px solid var(--vm-color-border);
+}
+
+.vm-systems-panel__rarity-zone li:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.vm-systems-panel__band-biomes {
+  font-size: 0.88rem;
+}
+
+.vm-systems-panel__goal-head span,
+.vm-systems-panel__band-head span {
+  color: var(--vm-color-ink-muted);
+}
+
+@media (min-width: 56rem) {
+  .vm-systems-panel__grid-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 40rem) {
+  .vm-systems-panel__section-head,
+  .vm-systems-panel__goal-head,
+  .vm-systems-panel__band-head,
+  .vm-systems-panel__rarity-zone li {
+    flex-direction: column;
+  }
+
+  .vm-systems-panel__loop-item {
+    grid-template-columns: 1fr;
+  }
+}
