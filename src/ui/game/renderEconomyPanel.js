@@ -78,9 +78,9 @@ export function renderEconomyPanel(state = {}, uiState = {}) {
           <div class="vm-economy__section-head">
             <div>
               <p class="vm-economy__kicker">Your Items</p>
-              <h3 class="vm-economy__section-title">What you're carrying</h3>
+              <h3 class="vm-economy__section-title">Inventory</h3>
             </div>
-            <p class="vm-economy__section-note">Items saved for jobs and your collection won't be sold.</p>
+            <p class="vm-economy__section-note">Reserved items won't be sold.</p>
           </div>
           <div class="vm-economy__inventory">
             ${
@@ -112,8 +112,8 @@ export function renderEconomyPanel(state = {}, uiState = {}) {
                     .join('')
                 : `
                     <article class="vm-economy__empty">
-                      <h4>Nothing in your backpack yet</h4>
-                      <p>Head to the <strong>Mining</strong> tab and hit <strong>Dig!</strong> to start finding ores. Your haul shows up here once you dig.</p>
+                      <h4>Backpack empty</h4>
+                      <p>Go to <strong>Mining</strong> and hit <strong>Dig!</strong> to find ores.</p>
                     </article>
                   `
             }
@@ -124,9 +124,9 @@ export function renderEconomyPanel(state = {}, uiState = {}) {
           <div class="vm-economy__section-head">
             <div>
               <p class="vm-economy__kicker">Prices</p>
-              <h3 class="vm-economy__section-title">What things are worth</h3>
+              <h3 class="vm-economy__section-title">Market prices</h3>
             </div>
-            <p class="vm-economy__section-note">Check prices to know what to sell first.</p>
+            <p class="vm-economy__section-note">Sell high-value ores first.</p>
           </div>
           <div class="vm-economy__market">
             ${
@@ -155,8 +155,8 @@ export function renderEconomyPanel(state = {}, uiState = {}) {
                     .join('')
                 : `
                     <article class="vm-economy__empty">
-                      <h4>No market prices yet</h4>
-                      <p>Ore prices appear once you start digging. Rarer ores from deeper zones are worth more coins.</p>
+                      <h4>No prices yet</h4>
+                      <p>Start digging to see ore prices here.</p>
                     </article>
                   `
             }
@@ -168,9 +168,9 @@ export function renderEconomyPanel(state = {}, uiState = {}) {
         <div class="vm-economy__section-head">
           <div>
             <p class="vm-economy__kicker">Upgrades</p>
-            <h3 class="vm-economy__section-title">Make your mine better</h3>
+            <h3 class="vm-economy__section-title">Mine improvements</h3>
           </div>
-          <p class="vm-economy__section-note">All upgrades and helper buildings are here.</p>
+          <p class="vm-economy__section-note">Upgrades and helper buildings.</p>
         </div>
         <div class="vm-economy__launcher-actions">
           <button
@@ -197,7 +197,7 @@ export function renderEconomyPanel(state = {}, uiState = {}) {
           <div class="vm-economy__section-head">
             <div>
               <p class="vm-economy__kicker">Jobs</p>
-              <h3 class="vm-economy__section-title">Tasks to complete</h3>
+              <h3 class="vm-economy__section-title">Active jobs</h3>
             </div>
             <button class="vm-economy__secondary" type="button" data-action="reroll-contracts">
               New Jobs
@@ -238,8 +238,8 @@ export function renderEconomyPanel(state = {}, uiState = {}) {
                     .join('')
                 : `
                     <article class="vm-economy__empty">
-                      <h4>No jobs available yet</h4>
-                      <p>Jobs unlock as your mine grows. Keep digging and hiring workers - new contracts will appear here. Hit <strong>New Jobs</strong> to refresh.</p>
+                      <h4>No jobs yet</h4>
+                      <p>Keep digging and hiring to unlock jobs. Hit <strong>New Jobs</strong> to refresh.</p>
                     </article>
                   `
             }
@@ -250,7 +250,7 @@ export function renderEconomyPanel(state = {}, uiState = {}) {
           <div class="vm-economy__section-head">
             <div>
               <p class="vm-economy__kicker">Workshop</p>
-              <h3 class="vm-economy__section-title">Crafting queue</h3>
+              <h3 class="vm-economy__section-title">Craft queue</h3>
             </div>
             <button class="vm-economy__secondary" type="button" data-action="start-refinery">
               Craft
@@ -282,8 +282,8 @@ export function renderEconomyPanel(state = {}, uiState = {}) {
                     .join('')
                 : `
                     <article class="vm-economy__empty">
-                      <h4>Nothing being crafted</h4>
-                      <p>Turn common ores into rarer, more valuable ones!</p>
+                      <h4>Nothing crafting</h4>
+                      <p>Combine ores into rarer ones.</p>
                     </article>
                   `
             }
@@ -315,8 +315,8 @@ function renderUpgradeModal({
   const showingSupport = upgradeModalView === 'support';
   const title = showingSupport ? 'Helper Buildings' : 'Upgrades';
   const subtitle = showingSupport
-    ? 'Buildings and services that let you hire more workers.'
-    : 'Make your mine stronger and hire more workers.';
+    ? 'Buildings that expand your workforce.'
+    : 'Boost mine output and capacity.';
 
   return `
     <div class="vm-economy-modal-backdrop${upgradeModalOpen ? ' is-open' : ''}" ${upgradeModalOpen ? '' : 'hidden'}>
@@ -381,7 +381,7 @@ function renderUpgradeCards(upgrades) {
     return `
       <article class="vm-economy__empty">
         <h4>No upgrades yet</h4>
-        <p>Upgrades appear as you play.</p>
+        <p>Unlocked as you play.</p>
       </article>
     `;
   }
@@ -420,7 +420,7 @@ function renderSupportCards(support) {
     return `
       <article class="vm-economy__empty">
         <h4>No helpers yet</h4>
-        <p>Helper buildings appear as you play.</p>
+        <p>Unlocked as you play.</p>
       </article>
     `;
   }

@@ -24,9 +24,9 @@ export function renderWorldPanel(state = {}) {
       <header class="vm-world__hero">
         <div>
           <p class="vm-world__eyebrow">World</p>
-          <h3 class="vm-world__title">Explore zones and grow your team</h3>
+          <h3 class="vm-world__title">Zones and team</h3>
           <p class="vm-world__copy">
-            Open new zones, grow your crew, and plan the next depth push.
+            Manage zones, crew, and depth.
           </p>
         </div>
         <dl class="vm-world__hero-metrics">
@@ -87,7 +87,7 @@ export function renderWorldPanel(state = {}) {
         <div class="vm-world__panel-head">
           <div>
             <p class="vm-world__kicker">Team Milestones</p>
-            <h4>Hire more workers to unlock new features</h4>
+            <h4>Worker milestones</h4>
           </div>
           <p>Workers: ${formatSimpleNumber(state.workers?.headcount)}</p>
         </div>
@@ -108,13 +108,13 @@ export function renderWorldPanel(state = {}) {
         <div class="vm-world__panel-head">
           <div>
             <p class="vm-world__kicker">Your Team</p>
-            <h4>Who does what</h4>
+            <h4>Crew roles</h4>
           </div>
           <button class="vm-world__button" type="button" data-action="hire-contractors">
             Hire Workers
           </button>
         </div>
-        <p class="vm-world__copy">Drag sliders to change how your workers are assigned. Total always stays at 100%.</p>
+        <p class="vm-world__copy">Assign workers by role. Total stays at 100%.</p>
         <div class="vm-world__crew-sliders">
           ${crewMix
             .map((entry) => `
@@ -176,7 +176,7 @@ export function renderWorldPanel(state = {}) {
         <div class="vm-world__panel-head">
           <div>
             <p class="vm-world__kicker">Collection</p>
-            <h4>Your rare finds and prizes</h4>
+            <h4>Rare finds</h4>
           </div>
           <p>Collection points: ${formatSimpleNumber(state.museumScore)}</p>
         </div>
@@ -197,7 +197,7 @@ export function renderWorldPanel(state = {}) {
             : `
               <article class="vm-world__empty">
                 <h5>Collection is empty</h5>
-                <p>Your rarest finds earn collection points and show up here. Dig deeper to discover legendary and mythic ores!</p>
+                <p>Dig deeper to find legendary and mythic ores.</p>
               </article>
             `
         }
@@ -207,7 +207,7 @@ export function renderWorldPanel(state = {}) {
         <div class="vm-world__panel-head">
           <div>
             <p class="vm-world__kicker">Event History</p>
-            <h4>What happened in your mine</h4>
+            <h4>Past events</h4>
           </div>
         </div>
         ${
@@ -227,7 +227,7 @@ export function renderWorldPanel(state = {}) {
             : `
               <article class="vm-world__empty">
                 <h5>No events in your history</h5>
-                <p>Special events appear as you mine. Events can boost drops, unlock bonuses, or create challenges - keep digging.</p>
+                <p>Events appear as you mine. Keep digging.</p>
               </article>
             `
         }

@@ -6,25 +6,25 @@ const TAB_DEFS = [
     id: 'mine',
     label: 'Mine',
     kicker: 'Dig and react',
-    summary: 'Mine ore, handle hazards, and catch active events.'
+    summary: 'Dig ore and handle events.'
   },
   {
     id: 'economy',
     label: 'Shop',
     kicker: 'Sell and upgrade',
-    summary: 'Turn ore into coins, upgrades, contracts, and refinery output.'
+    summary: 'Sell ore, buy upgrades, craft.'
   },
   {
     id: 'world',
     label: 'World',
     kicker: 'Zones and crew',
-    summary: 'Open new zones, manage workers, and plan your next depth push.'
+    summary: 'Zones, workers, and depth.'
   },
   {
     id: 'systems',
     label: 'Systems',
     kicker: 'Rules and goals',
-    summary: 'Learn the loop, check progress rules, and see good next targets.'
+    summary: 'Rules, goals, and progress.'
   }
 ];
 
@@ -60,7 +60,7 @@ export function renderGameShell({
               <div>
                 <h1 class="vm-game-command__title">Virtual Miner</h1>
                 <p class="vm-game-command__copy">
-                  Dig, sell, upgrade, unlock zones, and keep the mine earning even while you are away.
+                  Dig, sell, upgrade, and earn while away.
                 </p>
               </div>
               <div class="vm-game-command__focus">
@@ -74,12 +74,12 @@ export function renderGameShell({
             <article class="vm-game-metric-card">
               <span class="vm-game-metric-card__label">Coins</span>
               <strong class="vm-game-metric-card__value">${escapeHtml(credits)}</strong>
-              <span class="vm-game-metric-card__detail">Spend coins on upgrades, buildings, and worker growth.</span>
+              <span class="vm-game-metric-card__detail">For upgrades and buildings.</span>
             </article>
             <article class="vm-game-metric-card">
               <span class="vm-game-metric-card__label">Total earned</span>
               <strong class="vm-game-metric-card__value">${escapeHtml(lifetimeCredits)}</strong>
-              <span class="vm-game-metric-card__detail">Your full all-time coin total.</span>
+              <span class="vm-game-metric-card__detail">All-time total.</span>
             </article>
             <article class="vm-game-metric-card">
               <span class="vm-game-metric-card__label">Storage</span>
@@ -158,7 +158,7 @@ export function renderGameShell({
               <strong class="vm-game-sidecard__title">Storage</strong>
             </div>
             <p class="vm-game-sidecard__copy">
-              ${escapeHtml(`${inventoryLoad} of ${carryingCapacity} slots used. Sell items before your backpack overflows!`)}
+              ${escapeHtml(`${inventoryLoad} / ${carryingCapacity} slots used.`)}
             </p>
             <div class="vm-game-meter" style="--vm-game-meter:${escapeAttr(String(capacityRatio))}">
               <span class="vm-game-meter__fill" aria-hidden="true"></span>
