@@ -35,15 +35,24 @@ export function mountPlayableMiner(container) {
   let interactionActive = false;
   let interactionTimer = null;
   let deferredRender = false;
+  let restoringScroll = false;
+  let restoreTimer = null;
 
   function markInteraction() {
+    if (restoringScroll) return;
     interactionActive = true;
     clearTimeout(interactionTimer);
     interactionTimer = setTimeout(() => {
       interactionActive = false;
       if (deferredRender) {
         deferredRender = false;
-        render();
+        if (!renderScheduled) {
+          renderScheduled = true;
+          window.requestAnimationFrame(() => {
+            renderScheduled = false;
+            render();
+          });
+        }
       }
     }, 150);
   }
@@ -61,6 +70,7 @@ export function mountPlayableMiner(container) {
     container.removeEventListener('touchmove', markInteraction);
     window.removeEventListener('scroll', markInteraction);
     clearTimeout(interactionTimer);
+    clearTimeout(restoreTimer);
   }
 
   try {
@@ -138,6 +148,9 @@ export function mountPlayableMiner(container) {
     const focusAction = focused && container.contains(focused) ? focused.getAttribute('data-action') : null;
     const focusTab = focused && container.contains(focused) ? focused.getAttribute('data-tab') : null;
 
+    restoringScroll = true;
+    clearTimeout(restoreTimer);
+
     container.innerHTML = renderGameShell({
       state,
       minePanel: renderMinePanel(state),
@@ -176,6 +189,8 @@ export function mountPlayableMiner(container) {
         target.focus();
       }
     }
+
+    restoreTimer = setTimeout(() => { restoringScroll = false; }, 50);
   }
 }
 
